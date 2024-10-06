@@ -33,7 +33,7 @@
 		0F44B14A2CB2F50E00C244B7 /* Exceptions for "TicTacToe" folder in "TicTacToe" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 0F44B1212CB2F50C00C244B7 /* TicTacToe */;
 		};
