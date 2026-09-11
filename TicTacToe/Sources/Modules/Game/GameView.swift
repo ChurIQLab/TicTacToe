@@ -75,8 +75,8 @@ final class GameView: UIView {
 // MARK: - GameViewProtocol
 
 extension GameView: GameViewProtocol {
-    func showWinner(_ winner: String) {
-        delegate?.gameView(self, didShowWinner: winner)
+    func showGameOver(message: String) {
+        delegate?.gameView(self, didFinishGameWithMessage: message)
     }
 
     func updateButton(atRow row: Int, col: Int, withTitle title: String) {
