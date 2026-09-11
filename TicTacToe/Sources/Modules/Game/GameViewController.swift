@@ -67,8 +67,8 @@ final class GameViewController: UIViewController {
 // MARK: - GameViewDelegate
 
 extension GameViewController: GameViewDelegate {
-    func gameView(_ gameView: GameView, didShowWinner winner: String) {
-        let alert = UIAlertController(title: "Игра окончена", message: "Победитель: \(winner)", preferredStyle: .alert)
+    func gameView(_ gameView: GameView, didFinishGameWithMessage message: String) {
+        let alert = UIAlertController(title: "Игра окончена", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Начать новую игру", style: .default, handler: { [weak self] _ in
             self?.presenter.startNewGame()
         }))

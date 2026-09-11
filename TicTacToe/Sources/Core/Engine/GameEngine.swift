@@ -5,55 +5,61 @@
 //  Created by Churkin Vitaly on 06.10.2024.
 //
 
-import Foundation
+nonisolated struct GameEngine: Sendable {
 
-final class GameEngine {
+    // MARK: - Properties
 
-    func updateBoard(in model: inout GameModel, atRow row: Int, col: Int) {
-        model.board[row][col] = model.currentPlayer.symbol
+    static let winningLines: [[Position]] = {
+        let range = 0..<Board.size
+        let rows = range.map { row in Position.all.filter { $0.row == row } }
+        let columns = range.map { column in Position.all.filter { $0.column == column } }
+        let diagonal = Position.all.filter { $0.row == $0.column }
+        let antiDiagonal = Position.all.filter { $0.row + $0.column == Board.size - 1 }
+        return rows + columns + [diagonal, antiDiagonal]
+    }()
+
+    private(set) var board = Board()
+    private(set) var currentSide: Side
+    private(set) var result: GameResult?
+
+    // MARK: - Initial
+
+    init(firstSide: Side = .first) {
+        currentSide = firstSide
     }
 
-    func switchPlayers(in model: inout GameModel) {
-        model.currentPlayerIndex = (model.currentPlayerIndex + 1) % model.players.count
+    // MARK: - Methods
+
+    mutating func play(at position: Position) throws(MoveError) {
+        guard result == nil else { throw MoveError.gameOver }
+        guard board[position] == nil else { throw MoveError.cellOccupied }
+
+        board.place(currentSide, at: position)
+        result = Self.result(for: board)
+
+        if result == nil {
+            currentSide = currentSide.opponent
+        }
     }
 
-    func checkForWinner(in model: GameModel) -> String? {
-        let winnigCombinations = [
-            // Горизонтальные линии
-            [(0, 0), (0, 1), (0, 2)],
-            [(1, 0), (1, 1), (1, 2)],
-            [(2, 0), (2, 1), (2, 2)],
-            // Вертикальные линии
-            [(0, 0), (1, 0), (2, 0)],
-            [(0, 1), (1, 1), (2, 1)],
-            [(0, 2), (1, 2), (2, 2)],
-            // Диагональные линии
-            [(0, 0), (1, 1), (2, 2)],
-            [(0, 2), (1, 1), (2, 0)]
-        ]
-
-        for combination in winnigCombinations {
-            let first = combination[0]
-            let second = combination[1]
-            let third = combination[2]
-
-            if !model.board[first.0][first.1].isEmpty &&
-                model.board[first.0][first.1] == model.board[second.0][second.1] &&
-                model.board[second.0][second.1] == model.board[third.0][third.1] {
-                let winnigSymbol = model.board[first.0][first.1]
-                let winner = model.players.first { $0.symbol == winnigSymbol }
-                return winner?.name
-            }
+    static func result(for board: Board) -> GameResult? {
+        for line in winningLines {
+            guard
+                let start = line.first,
+                let side = board[start],
+                line.allSatisfy({ board[$0] == side })
+            else { continue }
+            return .win(side, line: line)
         }
+        return board.isFull ? .draw : nil
+    }
+}
 
-        let isDraw = model.board.allSatisfy { row in
-            row.allSatisfy { !$0.isEmpty }
-        }
+// MARK: - MoveError
 
-        if isDraw {
-            return "Draw"
-        }
-
-        return nil
+extension GameEngine {
+    nonisolated enum MoveError: Error, Equatable {
+        case cellOccupied
+        case gameOver
     }
 }
