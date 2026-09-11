@@ -112,6 +112,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0F44B14B2CB2F50E00C244B7 /* Build configuration list for PBXNativeTarget "TicTacToe" */;
 			buildPhases = (
+				0F44B1602CB3000000C244B7 /* SwiftLint */,
 				0F44B11E2CB2F50C00C244B7 /* Sources */,
 				0F44B11F2CB2F50C00C244B7 /* Frameworks */,
 				0F44B1202CB2F50C00C244B7 /* Resources */,
@@ -244,6 +245,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0F44B1602CB3000000C244B7 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"$(uname -m)\" = arm64 ]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint is not installed. Run: brew install swiftlint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0F44B11E2CB2F50C00C244B7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -290,6 +313,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H4V26893K7;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TicTacToe/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TicTacToe;
@@ -326,6 +350,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H4V26893K7;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TicTacToe/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TicTacToe;

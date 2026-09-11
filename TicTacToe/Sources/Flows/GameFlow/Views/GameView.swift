@@ -67,7 +67,7 @@ final class GameView: UIView {
             mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             mainStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             mainStackView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: Constants.widthMultiplier),
-            mainStackView.heightAnchor.constraint(equalTo: mainStackView.widthAnchor),
+            mainStackView.heightAnchor.constraint(equalTo: mainStackView.widthAnchor)
         ])
     }
 }

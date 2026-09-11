@@ -37,7 +37,7 @@ final class GameEngine {
             let second = combination[1]
             let third = combination[2]
 
-            if model.board[first.0][first.1] != "" &&
+            if !model.board[first.0][first.1].isEmpty &&
                 model.board[first.0][first.1] == model.board[second.0][second.1] &&
                 model.board[second.0][second.1] == model.board[third.0][third.1] {
                 let winnigSymbol = model.board[first.0][first.1]
@@ -47,7 +47,7 @@ final class GameEngine {
         }
 
         let isDraw = model.board.allSatisfy { row in
-            row.allSatisfy { $0 != "" }
+            row.allSatisfy { !$0.isEmpty }
         }
 
         if isDraw {
