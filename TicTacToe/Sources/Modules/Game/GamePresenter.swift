@@ -30,15 +30,15 @@ final class GamePresenter {
 
     private func name(for side: Side) -> String {
         switch side {
-        case .first: "Player 1"
-        case .second: "Player 2"
+        case .first: String(localized: .firstPlayerName)
+        case .second: String(localized: .secondPlayerName)
         }
     }
 
     private func message(for result: GameResult) -> String {
         switch result {
-        case .win(let side, _): "Победитель: \(name(for: side))"
-        case .draw: "Ничья"
+        case .win(let side, _): String(localized: .winnerMessage(name(for: side)))
+        case .draw: String(localized: .drawMessage)
         }
     }
 }
