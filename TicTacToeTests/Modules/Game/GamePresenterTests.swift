@@ -5,6 +5,7 @@
 //  Created by Churkin Vitaly on 12.09.2026.
 //
 
+import Foundation
 import Testing
 @testable import TicTacToe
 
@@ -43,18 +44,20 @@ struct GamePresenterTests {
 
     @Test func firstPlayerWinShowsWinnerMessage() throws {
         let (presenter, view) = makePresenter()
+        let expectedMessage = String(localized: .winnerMessage(String(localized: .firstPlayerName)))
 
         try tap([(0, 0), (1, 0), (0, 1), (1, 1), (0, 2)], on: presenter)
 
-        #expect(view.events.last == .showGameOver("Победитель: Player 1"))
+        #expect(view.events.last == .showGameOver(expectedMessage))
     }
 
     @Test func secondPlayerWinShowsWinnerMessage() throws {
         let (presenter, view) = makePresenter()
+        let expectedMessage = String(localized: .winnerMessage(String(localized: .secondPlayerName)))
 
         try tap([(1, 0), (0, 0), (1, 1), (0, 1), (2, 2), (0, 2)], on: presenter)
 
-        #expect(view.events.last == .showGameOver("Победитель: Player 2"))
+        #expect(view.events.last == .showGameOver(expectedMessage))
     }
 
     @Test func fullBoardWithoutLineShowsDraw() throws {
@@ -62,7 +65,7 @@ struct GamePresenterTests {
 
         try tap([(0, 0), (0, 1), (0, 2), (1, 1), (1, 0), (1, 2), (2, 1), (2, 0), (2, 2)], on: presenter)
 
-        #expect(view.events.last == .showGameOver("Ничья"))
+        #expect(view.events.last == .showGameOver(String(localized: .drawMessage)))
     }
 
     @Test func tapAfterGameOverIsIgnored() throws {

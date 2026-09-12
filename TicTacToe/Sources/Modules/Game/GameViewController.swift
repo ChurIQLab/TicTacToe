@@ -52,10 +52,15 @@ extension GameViewController: GameViewProtocol {
     }
 
     func showGameOver(message: String) {
-        let alert = UIAlertController(title: "Игра окончена", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Начать новую игру", style: .default, handler: { [weak self] _ in
+        let alert = UIAlertController(
+            title: String(localized: .gameOverTitle),
+            message: message,
+            preferredStyle: .alert
+        )
+        let newGameAction = UIAlertAction(title: String(localized: .newGameButton), style: .default) { [weak self] _ in
             self?.presenter.didTapNewGame()
-        }))
+        }
+        alert.addAction(newGameAction)
         present(alert, animated: true)
     }
 }
