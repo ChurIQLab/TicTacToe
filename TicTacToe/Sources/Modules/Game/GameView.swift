@@ -11,9 +11,9 @@ final class GameView: UIView {
 
     // MARK: - Properties
 
-    private let gridSize: Int = 3
-    weak var delegate: GameViewDelegate?
-    var buttons: [[UIButton]] = []
+    var onCellTap: ((Position) -> Void)?
+
+    private var buttons: [Position: UIButton] = [:]
 
     // MARK: - Outlets
 
@@ -30,6 +30,18 @@ final class GameView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Methods
+
+    func setSymbol(_ symbol: String, at position: Position) {
+        buttons[position]?.setTitle(symbol, for: .normal)
+    }
+
+    func reset() {
+        for button in buttons.values {
+            button.setTitle("", for: .normal)
+        }
+    }
+
     // MARK: - Setups
 
     private func setupView() {
@@ -37,27 +49,18 @@ final class GameView: UIView {
         mainStackView.spacing = Constants.buttonSpacing
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
 
-        for _ in 0..<gridSize {
+        for row in 0..<Board.size {
             let buttonRowStackView = UIStackView()
             buttonRowStackView.axis = .horizontal
             buttonRowStackView.spacing = Constants.buttonSpacing
             buttonRowStackView.distribution = .fillEqually
 
-            var buttonRow: [UIButton] = []
-            for _ in 0..<gridSize {
-                let button = UIButton(type: .system)
-                button.setTitle("", for: .normal)
-                button.backgroundColor = .lightGray
-                button.titleLabel?.font = .systemFont(ofSize: Constants.titleFontSize)
-                button.setTitleColor(.black, for: .normal)
-                button.layer.borderWidth = Constants.borderWidth
-                button.layer.borderColor = UIColor.black.cgColor
-                button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
-                buttonRow.append(button)
+            for position in Position.all where position.row == row {
+                let button = makeButton(for: position)
+                buttons[position] = button
                 buttonRowStackView.addArrangedSubview(button)
             }
 
-            buttons.append(buttonRow)
             mainStackView.addArrangedSubview(buttonRowStackView)
         }
 
@@ -70,25 +73,20 @@ final class GameView: UIView {
             mainStackView.heightAnchor.constraint(equalTo: mainStackView.widthAnchor)
         ])
     }
-}
 
-// MARK: - GameViewProtocol
-
-extension GameView: GameViewProtocol {
-    func showGameOver(message: String) {
-        delegate?.gameView(self, didFinishGameWithMessage: message)
-    }
-
-    func updateButton(atRow row: Int, col: Int, withTitle title: String) {
-        buttons[row][col].setTitle(title, for: .normal)
-    }
-
-    func resetBoard() {
-        for row in buttons {
-            for button in row {
-                button.setTitle("", for: .normal)
-            }
-        }
+    private func makeButton(for position: Position) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("", for: .normal)
+        button.backgroundColor = .lightGray
+        button.titleLabel?.font = .systemFont(ofSize: Constants.titleFontSize)
+        button.setTitleColor(.black, for: .normal)
+        button.layer.borderWidth = Constants.borderWidth
+        button.layer.borderColor = UIColor.black.cgColor
+        button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
+        button.addAction(UIAction { [weak self] _ in
+            self?.onCellTap?(position)
+        }, for: .touchUpInside)
+        return button
     }
 }
 

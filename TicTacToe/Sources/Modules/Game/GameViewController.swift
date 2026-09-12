@@ -11,66 +11,50 @@ final class GameViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let gameView: GameView
     private let presenter: GamePresenterProtocol
+    private let gameView = GameView()
 
     // MARK: - Lifecycle
 
+    override func loadView() {
+        view = gameView
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureView()
-        setupButtonActions()
-        gameView.delegate = self
+        gameView.onCellTap = { [weak self] position in
+            self?.presenter.didTapCell(at: position)
+        }
+        presenter.viewDidLoad()
     }
 
     // MARK: - Initial
 
-    init(presenter: GamePresenterProtocol, gameView: GameView) {
+    init(presenter: GamePresenterProtocol) {
         self.presenter = presenter
-        self.gameView = gameView
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    // MARK: - Private methods
-
-    private func configureView() {
-        view.addSubview(gameView)
-        gameView.frame = view.bounds
-        gameView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    }
-
-    private func setupButtonActions() {
-        for row in 0..<3 {
-            for col in 0..<3 {
-                let button = gameView.buttons[row][col]
-                button.addAction(UIAction { [weak self] _ in
-                    self?.handleButtonTapped(button)
-                }, for: .touchUpInside)
-            }
-        }
-    }
-
-    private func handleButtonTapped(_ sender: UIButton) {
-        guard
-            let buttonIndex = gameView.buttons.flatMap({ $0 }).firstIndex(of: sender)
-        else { return }
-        let row = buttonIndex / 3
-        let col = buttonIndex % 3
-        presenter.playerDidTapButton(atRow: row, col: col)
-    }
 }
 
-// MARK: - GameViewDelegate
+// MARK: - GameViewProtocol
 
-extension GameViewController: GameViewDelegate {
-    func gameView(_ gameView: GameView, didFinishGameWithMessage message: String) {
+extension GameViewController: GameViewProtocol {
+    func showSymbol(_ symbol: String, at position: Position) {
+        gameView.setSymbol(symbol, at: position)
+    }
+
+    func resetBoard() {
+        gameView.reset()
+    }
+
+    func showGameOver(message: String) {
         let alert = UIAlertController(title: "Игра окончена", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Начать новую игру", style: .default, handler: { [weak self] _ in
-            self?.presenter.startNewGame()
+            self?.presenter.didTapNewGame()
         }))
         present(alert, animated: true)
     }

@@ -7,21 +7,6 @@
 
 import Foundation
 
-protocol GameViewDelegate: AnyObject {
-    func gameView(_ gameView: GameView, didFinishGameWithMessage message: String)
-}
-
-protocol GameViewProtocol: AnyObject {
-    func showGameOver(message: String)
-    func updateButton(atRow row: Int, col: Int, withTitle title: String)
-    func resetBoard()
-}
-
-protocol GamePresenterProtocol: AnyObject {
-    func playerDidTapButton(atRow row: Int, col: Int)
-    func startNewGame()
-}
-
 final class GamePresenter {
 
     // MARK: - Properties
@@ -29,14 +14,12 @@ final class GamePresenter {
     weak var view: GameViewProtocol?
     private var engine = GameEngine()
 
-    // MARK: - Initial
-
-    init(view: GameViewProtocol) {
-        self.view = view
-        startNewGame()
-    }
-
     // MARK: - Private methods
+
+    private func startNewGame() {
+        engine = GameEngine()
+        view?.resetBoard()
+    }
 
     private func symbol(for side: Side) -> String {
         switch side {
@@ -60,9 +43,14 @@ final class GamePresenter {
     }
 }
 
+// MARK: - GamePresenterProtocol
+
 extension GamePresenter: GamePresenterProtocol {
-    func playerDidTapButton(atRow row: Int, col: Int) {
-        guard let position = Position(row: row, column: col) else { return }
+    func viewDidLoad() {
+        startNewGame()
+    }
+
+    func didTapCell(at position: Position) {
         let side = engine.currentSide
 
         do {
@@ -71,15 +59,14 @@ extension GamePresenter: GamePresenterProtocol {
             return
         }
 
-        view?.updateButton(atRow: row, col: col, withTitle: symbol(for: side))
+        view?.showSymbol(symbol(for: side), at: position)
 
         if let result = engine.result {
             view?.showGameOver(message: message(for: result))
         }
     }
 
-    func startNewGame() {
-        engine = GameEngine()
-        view?.resetBoard()
+    func didTapNewGame() {
+        startNewGame()
     }
 }
