@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+  # Rebase and merge creates new commits on develop, and master moves by fast-forward without a PR
+  push:
+    branches:
+      - develop
+      - master
+      - 'release/**'
+      - 'hotfix/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # Keep in sync with the local Xcode
+  DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+  # Keep in sync with the local SwiftLint; the checksum comes from Package.swift of the release tag
+  SWIFTLINT_VERSION: 0.57.1
+  SWIFTLINT_SHA256: c88bf3e5bc1326d8ca66bc3f9eae786f2094c5172cd70b26b5f07686bb883899
+  SIMULATOR_DEVICE: iPhone 16
+
+jobs:
+  lint-build-test:
+    name: Lint, build and test
+    runs-on: macos-26
+    timeout-minutes: 30
+    defaults:
+      run:
+        # Explicit bash adds -o pipefail, so xcbeautify does not hide xcodebuild failures
+        shell: bash
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Install SwiftLint
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/swiftlint.zip" \
+            "https://github.com/realm/SwiftLint/releases/download/$SWIFTLINT_VERSION/SwiftLintBinary-macos.artifactbundle.zip"
+          echo "$SWIFTLINT_SHA256  $RUNNER_TEMP/swiftlint.zip" | shasum -a 256 --check
+          unzip -q "$RUNNER_TEMP/swiftlint.zip" -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/SwiftLintBinary.artifactbundle/swiftlint-$SWIFTLINT_VERSION-macos/bin" >> "$GITHUB_PATH"
+
+      - name: Lint
+        run: |
+          swiftlint version
+          swiftlint lint --strict --reporter github-actions-logging
+
+      # A fresh simulator booted in advance, so xcodebuild does not hit boot timeouts
+      - name: Boot simulator
+        run: |
+          udid=$(xcrun simctl create "CI $SIMULATOR_DEVICE" "$SIMULATOR_DEVICE")
+          xcrun simctl bootstatus "$udid" -b
+          echo "SIMULATOR_UDID=$udid" >> "$GITHUB_ENV"
+
+      - name: Build
+        run: |
+          xcodebuild -version
+          xcodebuild build-for-testing \
+            -project TicTacToe.xcodeproj \
+            -scheme TicTacToe \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
+            | xcbeautify --renderer github-actions
+
+      # Parallel testing runs on simulator clones, and creating a clone fails intermittently
+      - name: Test
+        run: |
+          xcodebuild test-without-building \
+            -project TicTacToe.xcodeproj \
+            -scheme TicTacToe \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -only-testing:TicTacToeTests \
+            -parallel-testing-enabled NO \
+            | xcbeautify --renderer github-actions
