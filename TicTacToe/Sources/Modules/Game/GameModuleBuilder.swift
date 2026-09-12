@@ -9,9 +9,9 @@ import UIKit
 
 struct GameModuleBuilder {
     static func build() -> UIViewController {
-        let gameView = GameView()
-        let presenter = GamePresenter(view: gameView)
-        let viewController = GameViewController(presenter: presenter, gameView: gameView)
+        let presenter = GamePresenter()
+        let viewController = GameViewController(presenter: presenter)
+        presenter.view = viewController
         return viewController
     }
 }
