@@ -29,7 +29,11 @@ struct GamePresenterTests {
         presenter.didTapCell(at: firstCell)
         presenter.didTapCell(at: secondCell)
 
-        #expect(view.events == [.resetBoard, .showSymbol("X", firstCell), .showSymbol("O", secondCell)])
+        #expect(view.events == [
+            .resetBoard,
+            .showSymbol("X", .first, firstCell),
+            .showSymbol("O", .second, secondCell)
+        ])
     }
 
     @Test func tapOnOccupiedCellIsIgnored() throws {
@@ -39,7 +43,7 @@ struct GamePresenterTests {
         presenter.didTapCell(at: cell)
         presenter.didTapCell(at: cell)
 
-        #expect(view.events == [.resetBoard, .showSymbol("X", cell)])
+        #expect(view.events == [.resetBoard, .showSymbol("X", .first, cell)])
     }
 
     @Test func firstPlayerWinShowsWinnerMessage() throws {
@@ -87,7 +91,7 @@ struct GamePresenterTests {
         presenter.didTapNewGame()
         presenter.didTapCell(at: cell)
 
-        #expect(Array(view.events.suffix(2)) == [.resetBoard, .showSymbol("X", cell)])
+        #expect(Array(view.events.suffix(2)) == [.resetBoard, .showSymbol("X", .first, cell)])
     }
 }
 

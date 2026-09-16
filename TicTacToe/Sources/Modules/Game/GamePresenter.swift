@@ -59,7 +59,7 @@ extension GamePresenter: GamePresenterProtocol {
             return
         }
 
-        view?.showSymbol(symbol(for: side), at: position)
+        view?.showSymbol(symbol(for: side), for: side, at: position)
 
         if let result = engine.result {
             view?.showGameOver(message: message(for: result))
