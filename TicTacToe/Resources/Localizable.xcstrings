@@ -38,7 +38,7 @@
       }
     },
     "drawMessage" : {
-      "comment" : "Game over alert message when the board is full and nobody won",
+      "comment" : "Status under the board and title of the game result sheet when the board is full and nobody won",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -73,38 +73,20 @@
         }
       }
     },
-    "gameOverTitle" : {
-      "comment" : "Title of the alert shown when a game ends",
+    "playAgainButton" : {
+      "comment" : "Game result sheet button that starts the next game",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Game over"
+            "value" : "Play again"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Игра окончена"
-          }
-        }
-      }
-    },
-    "newGameButton" : {
-      "comment" : "Button in the game over alert that starts a new game",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start new game"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Начать новую игру"
+            "value" : "Ещё партия"
           }
         }
       }
@@ -123,6 +105,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Начать заново"
+          }
+        }
+      }
+    },
+    "scoreSubtitle" : {
+      "comment" : "Match score on the game result sheet: wins of the first and the second player",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Score %lld : %lld"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Счёт %lld : %lld"
           }
         }
       }
@@ -199,20 +199,20 @@
         }
       }
     },
-    "winnerMessage" : {
-      "comment" : "Game over alert message; the argument is the winner's name",
+    "winnerTitle" : {
+      "comment" : "Title of the game result sheet after a win; the argument is the winner's name",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Winner: %@"
+            "value" : "%@ wins"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Победитель: %@"
+            "value" : "Победил %@"
           }
         }
       }

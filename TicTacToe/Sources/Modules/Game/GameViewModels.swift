@@ -48,3 +48,21 @@ nonisolated struct WinningLineViewModel: Equatable, Sendable {
     let start: Position
     let end: Position
 }
+
+// MARK: - GameResultViewModel
+
+nonisolated struct GameResultViewModel: Equatable, Sendable {
+    let title: String
+    let score: String
+    /// The winner's figure, or the figures of both sides after a draw
+    let figures: [SideFigure]
+    /// Tints the badge; `nil` after a draw
+    let winner: Side?
+}
+
+// MARK: - SideFigure
+
+nonisolated struct SideFigure: Equatable, Sendable {
+    let side: Side
+    let figure: Figure
+}

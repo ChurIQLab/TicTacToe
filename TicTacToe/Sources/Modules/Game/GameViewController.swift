@@ -88,9 +88,9 @@ extension GameViewController: GameViewProtocol {
         gameView.updateStatus(status)
     }
 
-    func showGameOver(message: String, winningLine: WinningLineViewModel?) {
+    func showGameOver(_ result: GameResultViewModel, winningLine: WinningLineViewModel?) {
         gameView.showGameOver(winningLine: winningLine) { [weak self] in
-            self?.presentGameOverAlert(message: message)
+            self?.presentResult(result)
         }
     }
 }
@@ -98,17 +98,11 @@ extension GameViewController: GameViewProtocol {
 // MARK: - Private methods
 
 extension GameViewController {
-    private func presentGameOverAlert(message: String) {
-        let alert = UIAlertController(
-            title: String(localized: .gameOverTitle),
-            message: message,
-            preferredStyle: .alert
-        )
-        let newGameAction = UIAlertAction(title: String(localized: .newGameButton), style: .default) { [weak self] _ in
+    private func presentResult(_ result: GameResultViewModel) {
+        let resultViewController = GameResultViewController(result: result) { [weak self] in
             self?.presenter.didTapNewGame()
         }
-        alert.addAction(newGameAction)
-        present(alert, animated: true)
+        present(resultViewController, animated: true)
     }
 }
 

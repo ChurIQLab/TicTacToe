@@ -103,10 +103,23 @@ final class GamePresenter {
         return WinningLineViewModel(side: side, start: start, end: end)
     }
 
-    private func message(for result: GameResult) -> String {
+    private func resultViewModel(for result: GameResult) -> GameResultViewModel {
+        let score = String(localized: .scoreSubtitle(scores[.first, default: 0], scores[.second, default: 0]))
         switch result {
-        case .win(let side, _): String(localized: .winnerMessage(name(for: side)))
-        case .draw: String(localized: .drawMessage)
+        case .win(let side, _):
+            return GameResultViewModel(
+                title: String(localized: .winnerTitle(name(for: side))),
+                score: score,
+                figures: [SideFigure(side: side, figure: figure(for: side))],
+                winner: side
+            )
+        case .draw:
+            return GameResultViewModel(
+                title: String(localized: .drawMessage),
+                score: score,
+                figures: Side.allCases.map { SideFigure(side: $0, figure: figure(for: $0)) },
+                winner: nil
+            )
         }
     }
 }
@@ -136,7 +149,7 @@ extension GamePresenter: GamePresenterProtocol {
         }
         finishGame(with: result)
         updatePanels()
-        view?.showGameOver(message: message(for: result), winningLine: winningLine(for: result))
+        view?.showGameOver(resultViewModel(for: result), winningLine: winningLine(for: result))
     }
 
     func didTapNewGame() {
