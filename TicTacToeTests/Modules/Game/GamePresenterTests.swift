@@ -13,7 +13,7 @@ struct GamePresenterTests {
 
     @Test func viewDidLoadSetsTitleAndResetsBoard() {
         let view = GameViewSpy()
-        let presenter = GamePresenter()
+        let presenter = GamePresenter(haptics: HapticsServiceSpy())
         presenter.view = view
 
         presenter.viewDidLoad()
@@ -184,6 +184,35 @@ struct GamePresenterTests {
         #expect(view.status == GameStatusViewModel(text: String(localized: .drawMessage), player: nil))
     }
 
+    @Test func moveAndWinPlayHaptics() throws {
+        let haptics = HapticsServiceSpy()
+        let (presenter, _) = makePresenter(haptics: haptics)
+
+        try tap(firstSideWin, on: presenter)
+
+        #expect(haptics.events == [.move, .move, .move, .move, .win])
+    }
+
+    @Test func drawPlaysDrawHaptic() throws {
+        let haptics = HapticsServiceSpy()
+        let (presenter, _) = makePresenter(haptics: haptics)
+
+        try tap(draw, on: presenter)
+
+        #expect(haptics.events.last == .draw)
+    }
+
+    @Test func ignoredTapPlaysNoHaptic() throws {
+        let haptics = HapticsServiceSpy()
+        let (presenter, _) = makePresenter(haptics: haptics)
+        let cell = try position(1, 1)
+
+        presenter.didTapCell(at: cell)
+        presenter.didTapCell(at: cell)
+
+        #expect(haptics.events == [.move])
+    }
+
     @Test func newGameAfterFinishedGameAlternatesFirstSideAndKeepsScore() throws {
         let (presenter, view) = makePresenter()
         try tap(firstSideWin, on: presenter)
@@ -226,9 +255,9 @@ extension GamePresenterTests {
 
     // MARK: - Private methods
 
-    private func makePresenter() -> (GamePresenter, GameViewSpy) {
+    private func makePresenter(haptics: HapticsServiceSpy = HapticsServiceSpy()) -> (GamePresenter, GameViewSpy) {
         let view = GameViewSpy()
-        let presenter = GamePresenter()
+        let presenter = GamePresenter(haptics: haptics)
         presenter.view = view
         presenter.viewDidLoad()
         return (presenter, view)

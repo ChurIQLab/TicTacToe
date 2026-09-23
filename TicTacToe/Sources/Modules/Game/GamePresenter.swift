@@ -12,10 +12,17 @@ final class GamePresenter {
     // MARK: - Properties
 
     weak var view: GameViewProtocol?
+    private let haptics: HapticsServiceProtocol
     private var engine = GameEngine()
     /// Alternates after every finished game; a restarted game keeps its first side
     private var firstSide: Side = .first
     private var scores: [Side: Int] = [:]
+
+    // MARK: - Initial
+
+    init(haptics: HapticsServiceProtocol) {
+        self.haptics = haptics
+    }
 
     // MARK: - Private methods
 
@@ -26,8 +33,12 @@ final class GamePresenter {
     }
 
     private func finishGame(with result: GameResult) {
-        if case .win(let side, _) = result {
+        switch result {
+        case .win(let side, _):
             scores[side, default: 0] += 1
+            haptics.playWin()
+        case .draw:
+            haptics.playDraw()
         }
         firstSide = firstSide.opponent
     }
@@ -144,6 +155,7 @@ extension GamePresenter: GamePresenterProtocol {
         view?.showFigure(figure(for: side), for: side, at: position)
 
         guard let result = engine.result else {
+            haptics.playMove()
             updatePanels()
             return
         }
