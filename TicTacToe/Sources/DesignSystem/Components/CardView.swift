@@ -17,6 +17,13 @@ final class CardView: UIView {
         }
     }
 
+    /// Replaces the surface and shadows with a tinted fill and an inner border
+    var highlight: Highlight? {
+        didSet {
+            updateAppearance()
+        }
+    }
+
     /// One surface view per shadow layer: the upper surface covers the shadows of the lower ones
     private let surfaceViews = Shadow.card.map { _ in UIView() }
 
@@ -48,22 +55,46 @@ final class CardView: UIView {
 
     private func setupView() {
         for surfaceView in surfaceViews {
-            surfaceView.backgroundColor = .surface
             surfaceView.layer.cornerCurve = .continuous
             surfaceView.isUserInteractionEnabled = false
             addSubview(surfaceView)
         }
-        updateShadows()
+        updateAppearance()
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (cardView: CardView, _: UITraitCollection) in
-            cardView.updateShadows()
+            cardView.updateAppearance()
         }
     }
 
     // MARK: - Private methods
 
-    private func updateShadows() {
+    private func updateAppearance() {
         for (surfaceView, shadow) in zip(surfaceViews, Shadow.card) {
+            surfaceView.backgroundColor = highlight?.fillColor ?? .surface
             shadow.apply(to: surfaceView.layer, for: traitCollection)
+            if highlight != nil {
+                surfaceView.layer.shadowOpacity = 0
+            }
         }
+
+        guard let topLayer = surfaceViews.last?.layer else { return }
+        topLayer.borderWidth = highlight == nil ? 0 : Constants.highlightBorderWidth
+        topLayer.borderColor = highlight?.borderColor.resolvedColor(with: traitCollection).cgColor
+    }
+}
+
+// MARK: - Highlight
+
+extension CardView {
+    struct Highlight {
+        let fillColor: UIColor
+        let borderColor: UIColor
+    }
+}
+
+// MARK: - Constants
+
+extension CardView {
+    struct Constants {
+        static let highlightBorderWidth: CGFloat = 2
     }
 }

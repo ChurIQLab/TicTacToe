@@ -9,6 +9,7 @@ protocol GameViewProtocol: AnyObject {
     func setTitle(_ title: String)
     func showFigure(_ figure: Figure, for side: Side, at position: Position)
     func resetBoard()
+    func updatePlayers(_ players: [PlayerCardViewModel])
     func showGameOver(message: String)
 }
 

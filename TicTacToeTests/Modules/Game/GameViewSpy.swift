@@ -12,6 +12,23 @@ final class GameViewSpy {
     // MARK: - Properties
 
     private(set) var events: [Event] = []
+
+    /// Board changes and the game over, without the updates of the surrounding panels
+    var boardEvents: [Event] {
+        events.filter { event in
+            switch event {
+            case .showFigure, .resetBoard, .showGameOver: true
+            case .setTitle, .updatePlayers: false
+            }
+        }
+    }
+
+    var players: [PlayerCardViewModel] {
+        for case .updatePlayers(let players) in events.reversed() {
+            return players
+        }
+        return []
+    }
 }
 
 // MARK: - GameViewProtocol
@@ -29,6 +46,10 @@ extension GameViewSpy: GameViewProtocol {
         events.append(.resetBoard)
     }
 
+    func updatePlayers(_ players: [PlayerCardViewModel]) {
+        events.append(.updatePlayers(players))
+    }
+
     func showGameOver(message: String) {
         events.append(.showGameOver(message))
     }
@@ -41,6 +62,7 @@ extension GameViewSpy {
         case setTitle(String)
         case showFigure(Figure, Side, Position)
         case resetBoard
+        case updatePlayers([PlayerCardViewModel])
         case showGameOver(String)
     }
 }

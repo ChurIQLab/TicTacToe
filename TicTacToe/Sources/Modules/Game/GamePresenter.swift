@@ -13,12 +13,44 @@ final class GamePresenter {
 
     weak var view: GameViewProtocol?
     private var engine = GameEngine()
+    /// Alternates after every finished game; a restarted game keeps its first side
+    private var firstSide: Side = .first
+    private var scores: [Side: Int] = [:]
 
     // MARK: - Private methods
 
     private func startNewGame() {
-        engine = GameEngine()
+        engine = GameEngine(firstSide: firstSide)
         view?.resetBoard()
+        updatePlayers()
+    }
+
+    private func finishGame(with result: GameResult) {
+        if case .win(let side, _) = result {
+            scores[side, default: 0] += 1
+        }
+        firstSide = firstSide.opponent
+    }
+
+    private func updatePlayers() {
+        let players = Side.allCases.map { side in
+            PlayerCardViewModel(
+                side: side,
+                figure: figure(for: side),
+                name: name(for: side),
+                score: scores[side, default: 0],
+                state: cardState(for: side)
+            )
+        }
+        view?.updatePlayers(players)
+    }
+
+    private func cardState(for side: Side) -> PlayerCardViewModel.State {
+        switch engine.result {
+        case .draw: .neutral
+        case .win(let winner, _): winner == side ? .active : .inactive
+        case nil: engine.currentSide == side ? .active : .inactive
+        }
     }
 
     private func figure(for side: Side) -> Figure {
@@ -62,9 +94,13 @@ extension GamePresenter: GamePresenterProtocol {
 
         view?.showFigure(figure(for: side), for: side, at: position)
 
-        if let result = engine.result {
-            view?.showGameOver(message: message(for: result))
+        guard let result = engine.result else {
+            updatePlayers()
+            return
         }
+        finishGame(with: result)
+        updatePlayers()
+        view?.showGameOver(message: message(for: result))
     }
 
     func didTapNewGame() {
