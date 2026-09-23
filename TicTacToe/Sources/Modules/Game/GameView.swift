@@ -17,6 +17,8 @@ final class GameView: UIView {
     private var playerCards: [Side: PlayerCardView] = [:]
     private var playerCardHeightConstraints: [NSLayoutConstraint] = []
     private var heightClass: HeightClass?
+    /// Changes on every reset, so a finished game ending after a restart is not shown
+    private var gameID = 0
 
     // MARK: - Outlets
 
@@ -24,6 +26,7 @@ final class GameView: UIView {
     private let playersStackView = UIStackView()
     private let boardStackView = UIStackView()
     private let statusView = GameStatusView()
+    private let winLineView = WinLineView()
 
     // MARK: - Lifecycle
 
@@ -59,7 +62,25 @@ final class GameView: UIView {
         statusView.configure(with: status)
     }
 
+    /// Draws the winning line after the last figure, then calls `completion`
+    func showGameOver(winningLine: WinningLineViewModel?, completion: @escaping () -> Void) {
+        var delay = FigureView.Constants.drawDuration
+        if let winningLine {
+            winLineView.show(winningLine, after: delay)
+            delay += WinLineView.Constants.drawDuration
+        }
+
+        let gameID = gameID
+        Task { [weak self] in
+            try? await Task.sleep(for: .seconds(delay))
+            guard let self, self.gameID == gameID else { return }
+            completion()
+        }
+    }
+
     func reset() {
+        gameID += 1
+        winLineView.hide()
         for cell in cells.values {
             cell.clear()
         }
@@ -80,6 +101,10 @@ final class GameView: UIView {
         contentStackView.addArrangedSubview(statusView)
         addSubview(contentStackView)
 
+        winLineView.spacing = Spacing.betweenCells
+        winLineView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(winLineView)
+
         let safeArea = safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             contentStackView.leadingAnchor.constraint(
@@ -91,7 +116,11 @@ final class GameView: UIView {
                 constant: -Spacing.screenMargin
             ),
             contentStackView.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
-            boardStackView.heightAnchor.constraint(equalTo: boardStackView.widthAnchor)
+            boardStackView.heightAnchor.constraint(equalTo: boardStackView.widthAnchor),
+            winLineView.topAnchor.constraint(equalTo: boardStackView.topAnchor),
+            winLineView.leadingAnchor.constraint(equalTo: boardStackView.leadingAnchor),
+            winLineView.trailingAnchor.constraint(equalTo: boardStackView.trailingAnchor),
+            winLineView.bottomAnchor.constraint(equalTo: boardStackView.bottomAnchor)
         ])
     }
 

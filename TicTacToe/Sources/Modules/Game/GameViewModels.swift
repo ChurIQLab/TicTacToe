@@ -40,3 +40,11 @@ extension GameStatusViewModel {
         let name: String
     }
 }
+
+// MARK: - WinningLineViewModel
+
+nonisolated struct WinningLineViewModel: Equatable, Sendable {
+    let side: Side
+    let start: Position
+    let end: Position
+}

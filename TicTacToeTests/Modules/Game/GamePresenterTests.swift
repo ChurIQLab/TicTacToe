@@ -52,7 +52,10 @@ struct GamePresenterTests {
 
         try tap(firstSideWin, on: presenter)
 
-        #expect(view.events.last == .showGameOver(expectedMessage))
+        #expect(view.events.last == .showGameOver(
+            expectedMessage,
+            WinningLineViewModel(side: .first, start: try position(0, 0), end: try position(0, 2))
+        ))
     }
 
     @Test func secondPlayerWinShowsWinnerMessage() throws {
@@ -61,7 +64,10 @@ struct GamePresenterTests {
 
         try tap([(1, 0), (0, 0), (1, 1), (0, 1), (2, 2), (0, 2)], on: presenter)
 
-        #expect(view.events.last == .showGameOver(expectedMessage))
+        #expect(view.events.last == .showGameOver(
+            expectedMessage,
+            WinningLineViewModel(side: .second, start: try position(0, 0), end: try position(0, 2))
+        ))
     }
 
     @Test func fullBoardWithoutLineShowsDraw() throws {
@@ -69,7 +75,7 @@ struct GamePresenterTests {
 
         try tap(draw, on: presenter)
 
-        #expect(view.events.last == .showGameOver(String(localized: .drawMessage)))
+        #expect(view.events.last == .showGameOver(String(localized: .drawMessage), nil))
     }
 
     @Test func tapAfterGameOverIsIgnored() throws {
