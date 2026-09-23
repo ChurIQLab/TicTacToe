@@ -1,6 +1,42 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "circleFigure" : {
+      "comment" : "VoiceOver name of the circle figure",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circle"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нолик"
+          }
+        }
+      }
+    },
+    "crossFigure" : {
+      "comment" : "VoiceOver name of the cross figure",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cross"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Крестик"
+          }
+        }
+      }
+    },
     "drawMessage" : {
       "comment" : "Game over alert message when the board is full and nobody won",
       "extractionState" : "manual",

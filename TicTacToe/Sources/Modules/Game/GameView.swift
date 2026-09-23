@@ -40,8 +40,8 @@ final class GameView: UIView {
 
     // MARK: - Methods
 
-    func setSymbol(_ symbol: String, for side: Side, at position: Position) {
-        cells[position]?.setSymbol(symbol, color: side.color)
+    func showFigure(_ figure: Figure, for side: Side, at position: Position) {
+        cells[position]?.showFigure(figure, color: side.color)
     }
 
     func reset() {
@@ -114,7 +114,8 @@ private final class BoardCell: UIControl {
     // MARK: - Outlets
 
     private let cardView = CardView(cornerRadius: CornerRadius.cell(for: .regular))
-    private let symbolLabel = UILabel()
+    private let figureView = FigureView()
+    private var figureSizeConstraint: NSLayoutConstraint?
 
     // MARK: - Initial
 
@@ -129,20 +130,19 @@ private final class BoardCell: UIControl {
 
     // MARK: - Methods
 
-    func setSymbol(_ symbol: String, color: UIColor) {
-        symbolLabel.text = symbol
-        symbolLabel.textColor = color
-        accessibilityLabel = symbol
+    func showFigure(_ figure: Figure, color: UIColor) {
+        figureView.show(figure, color: color, animated: true)
+        accessibilityLabel = figure.accessibilityName
     }
 
     func clear() {
-        symbolLabel.text = nil
+        figureView.show(nil, color: .clear)
         accessibilityLabel = nil
     }
 
     func apply(_ heightClass: HeightClass) {
         cardView.cornerRadius = CornerRadius.cell(for: heightClass)
-        symbolLabel.font = .rounded(ofSize: Size.figureInCell(for: heightClass), weight: .heavy)
+        figureSizeConstraint?.constant = Size.figureInCell(for: heightClass)
     }
 
     // MARK: - Setups
@@ -152,18 +152,23 @@ private final class BoardCell: UIControl {
         accessibilityTraits = .button
 
         cardView.isUserInteractionEnabled = false
-        symbolLabel.textAlignment = .center
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        figureView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(cardView)
+        addSubview(figureView)
 
-        for subview in [cardView, symbolLabel] {
-            subview.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(subview)
-            NSLayoutConstraint.activate([
-                subview.topAnchor.constraint(equalTo: topAnchor),
-                subview.leadingAnchor.constraint(equalTo: leadingAnchor),
-                subview.trailingAnchor.constraint(equalTo: trailingAnchor),
-                subview.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
-        }
+        let figureSizeConstraint = figureView.widthAnchor.constraint(equalToConstant: Size.figureInCell(for: .regular))
+        self.figureSizeConstraint = figureSizeConstraint
+        NSLayoutConstraint.activate([
+            cardView.topAnchor.constraint(equalTo: topAnchor),
+            cardView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            cardView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            cardView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            figureView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            figureView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            figureView.heightAnchor.constraint(equalTo: figureView.widthAnchor),
+            figureSizeConstraint
+        ])
 
         apply(.regular)
     }
