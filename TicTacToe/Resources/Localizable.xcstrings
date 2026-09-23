@@ -145,6 +145,24 @@
         }
       }
     },
+    "turnStatus" : {
+      "comment" : "Status under the board while a game goes on; the argument is the name of the player who moves",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@'s turn"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ходит %@"
+          }
+        }
+      }
+    },
     "twoPlayersTitle" : {
       "comment" : "Game screen title in the mode for two players on one device",
       "extractionState" : "manual",
@@ -159,6 +177,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вдвоём"
+          }
+        }
+      }
+    },
+    "winStatus" : {
+      "comment" : "Status under the board after a win; the argument is the winner's name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wins"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Победил %@"
           }
         }
       }

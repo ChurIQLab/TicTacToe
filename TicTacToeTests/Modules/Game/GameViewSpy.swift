@@ -18,9 +18,16 @@ final class GameViewSpy {
         events.filter { event in
             switch event {
             case .showFigure, .resetBoard, .showGameOver: true
-            case .setTitle, .updatePlayers: false
+            case .setTitle, .updatePlayers, .updateStatus: false
             }
         }
+    }
+
+    var status: GameStatusViewModel? {
+        for case .updateStatus(let status) in events.reversed() {
+            return status
+        }
+        return nil
     }
 
     var players: [PlayerCardViewModel] {
@@ -50,6 +57,10 @@ extension GameViewSpy: GameViewProtocol {
         events.append(.updatePlayers(players))
     }
 
+    func updateStatus(_ status: GameStatusViewModel) {
+        events.append(.updateStatus(status))
+    }
+
     func showGameOver(message: String) {
         events.append(.showGameOver(message))
     }
@@ -63,6 +74,7 @@ extension GameViewSpy {
         case showFigure(Figure, Side, Position)
         case resetBoard
         case updatePlayers([PlayerCardViewModel])
+        case updateStatus(GameStatusViewModel)
         case showGameOver(String)
     }
 }
