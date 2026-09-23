@@ -9,7 +9,7 @@ import UIKit
 
 struct GameModuleBuilder {
     static func build() -> UIViewController {
-        let presenter = GamePresenter()
+        let presenter = GamePresenter(haptics: HapticsService())
         let viewController = GameViewController(presenter: presenter)
         presenter.view = viewController
         return viewController
