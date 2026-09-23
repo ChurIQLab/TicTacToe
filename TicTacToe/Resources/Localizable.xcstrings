@@ -109,6 +109,24 @@
         }
       }
     },
+    "restartButton" : {
+      "comment" : "Accessibility label of the navigation bar button that restarts the game",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restart"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать заново"
+          }
+        }
+      }
+    },
     "secondPlayerName" : {
       "comment" : "Default name of the player who moves second",
       "extractionState" : "manual",
@@ -123,6 +141,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Игрок 2"
+          }
+        }
+      }
+    },
+    "twoPlayersTitle" : {
+      "comment" : "Game screen title in the mode for two players on one device",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two players"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вдвоём"
           }
         }
       }

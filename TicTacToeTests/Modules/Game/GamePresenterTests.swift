@@ -11,14 +11,14 @@ import Testing
 
 struct GamePresenterTests {
 
-    @Test func viewDidLoadResetsBoard() {
+    @Test func viewDidLoadSetsTitleAndResetsBoard() {
         let view = GameViewSpy()
         let presenter = GamePresenter()
         presenter.view = view
 
         presenter.viewDidLoad()
 
-        #expect(view.events == [.resetBoard])
+        #expect(view.events == [.setTitle(String(localized: .twoPlayersTitle)), .resetBoard])
     }
 
     @Test func tapsShowFiguresOfAlternatingSides() throws {
@@ -29,8 +29,7 @@ struct GamePresenterTests {
         presenter.didTapCell(at: firstCell)
         presenter.didTapCell(at: secondCell)
 
-        #expect(view.events == [
-            .resetBoard,
+        #expect(Array(view.events.suffix(2)) == [
             .showFigure(.cross, .first, firstCell),
             .showFigure(.circle, .second, secondCell)
         ])
@@ -43,7 +42,7 @@ struct GamePresenterTests {
         presenter.didTapCell(at: cell)
         presenter.didTapCell(at: cell)
 
-        #expect(view.events == [.resetBoard, .showFigure(.cross, .first, cell)])
+        #expect(Array(view.events.suffix(2)) == [.resetBoard, .showFigure(.cross, .first, cell)])
     }
 
     @Test func firstPlayerWinShowsWinnerMessage() throws {

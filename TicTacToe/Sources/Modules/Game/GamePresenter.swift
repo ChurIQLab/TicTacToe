@@ -47,6 +47,7 @@ final class GamePresenter {
 
 extension GamePresenter: GamePresenterProtocol {
     func viewDidLoad() {
+        view?.setTitle(String(localized: .twoPlayersTitle))
         startNewGame()
     }
 
