@@ -11,7 +11,7 @@ protocol GameViewProtocol: AnyObject {
     func resetBoard()
     func updatePlayers(_ players: [PlayerCardViewModel])
     func updateStatus(_ status: GameStatusViewModel)
-    func showGameOver(message: String)
+    func showGameOver(message: String, winningLine: WinningLineViewModel?)
 }
 
 protocol GamePresenterProtocol: AnyObject {

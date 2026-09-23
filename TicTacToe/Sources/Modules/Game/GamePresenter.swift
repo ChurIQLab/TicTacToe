@@ -94,6 +94,15 @@ final class GamePresenter {
         }
     }
 
+    private func winningLine(for result: GameResult) -> WinningLineViewModel? {
+        guard
+            case .win(let side, let line) = result,
+            let start = line.first,
+            let end = line.last
+        else { return nil }
+        return WinningLineViewModel(side: side, start: start, end: end)
+    }
+
     private func message(for result: GameResult) -> String {
         switch result {
         case .win(let side, _): String(localized: .winnerMessage(name(for: side)))
@@ -127,7 +136,7 @@ extension GamePresenter: GamePresenterProtocol {
         }
         finishGame(with: result)
         updatePanels()
-        view?.showGameOver(message: message(for: result))
+        view?.showGameOver(message: message(for: result), winningLine: winningLine(for: result))
     }
 
     func didTapNewGame() {

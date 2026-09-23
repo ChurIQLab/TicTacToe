@@ -88,7 +88,17 @@ extension GameViewController: GameViewProtocol {
         gameView.updateStatus(status)
     }
 
-    func showGameOver(message: String) {
+    func showGameOver(message: String, winningLine: WinningLineViewModel?) {
+        gameView.showGameOver(winningLine: winningLine) { [weak self] in
+            self?.presentGameOverAlert(message: message)
+        }
+    }
+}
+
+// MARK: - Private methods
+
+extension GameViewController {
+    private func presentGameOverAlert(message: String) {
         let alert = UIAlertController(
             title: String(localized: .gameOverTitle),
             message: message,
