@@ -80,6 +80,10 @@ extension GameViewController: GameViewProtocol {
         gameView.reset()
     }
 
+    func updatePlayers(_ players: [PlayerCardViewModel]) {
+        gameView.updatePlayers(players)
+    }
+
     func showGameOver(message: String) {
         let alert = UIAlertController(
             title: String(localized: .gameOverTitle),

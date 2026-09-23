@@ -14,11 +14,15 @@ final class GameView: UIView {
     var onCellTap: ((Position) -> Void)?
 
     private var cells: [Position: BoardCell] = [:]
+    private var playerCards: [Side: PlayerCardView] = [:]
+    private var playerCardHeightConstraints: [NSLayoutConstraint] = []
     private var heightClass: HeightClass?
 
     // MARK: - Outlets
 
-    private let mainStackView = UIStackView()
+    private let contentStackView = UIStackView()
+    private let playersStackView = UIStackView()
+    private let boardStackView = UIStackView()
 
     // MARK: - Lifecycle
 
@@ -44,6 +48,12 @@ final class GameView: UIView {
         cells[position]?.showFigure(figure, color: side.color)
     }
 
+    func updatePlayers(_ players: [PlayerCardViewModel]) {
+        for player in players {
+            playerCards[player.side]?.configure(with: player)
+        }
+    }
+
     func reset() {
         for cell in cells.values {
             cell.clear()
@@ -54,10 +64,51 @@ final class GameView: UIView {
 
     private func setupView() {
         backgroundColor = .screenBackground
+        setupPlayers()
+        setupBoard()
 
-        mainStackView.axis = .vertical
-        mainStackView.spacing = Spacing.betweenCells
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentStackView.axis = .vertical
+        contentStackView.spacing = Spacing.betweenBlocks(for: .regular)
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentStackView.addArrangedSubview(playersStackView)
+        contentStackView.addArrangedSubview(boardStackView)
+        addSubview(contentStackView)
+
+        let safeArea = safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            contentStackView.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor,
+                constant: Spacing.screenMargin
+            ),
+            contentStackView.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor,
+                constant: -Spacing.screenMargin
+            ),
+            contentStackView.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
+            boardStackView.heightAnchor.constraint(equalTo: boardStackView.widthAnchor)
+        ])
+    }
+
+    private func setupPlayers() {
+        playersStackView.axis = .horizontal
+        playersStackView.spacing = Spacing.betweenCards
+        playersStackView.distribution = .fillEqually
+
+        for side in Side.allCases {
+            let playerCard = PlayerCardView()
+            let heightConstraint = playerCard.heightAnchor.constraint(
+                equalToConstant: Size.playerCardHeight(for: .regular)
+            )
+            heightConstraint.isActive = true
+            playerCardHeightConstraints.append(heightConstraint)
+            playerCards[side] = playerCard
+            playersStackView.addArrangedSubview(playerCard)
+        }
+    }
+
+    private func setupBoard() {
+        boardStackView.axis = .vertical
+        boardStackView.spacing = Spacing.betweenCells
 
         for row in 0..<Board.size {
             let cellRowStackView = UIStackView()
@@ -71,18 +122,8 @@ final class GameView: UIView {
                 cellRowStackView.addArrangedSubview(cell)
             }
 
-            mainStackView.addArrangedSubview(cellRowStackView)
+            boardStackView.addArrangedSubview(cellRowStackView)
         }
-
-        addSubview(mainStackView)
-
-        let safeArea = safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: Spacing.screenMargin),
-            mainStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -Spacing.screenMargin),
-            mainStackView.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor),
-            mainStackView.heightAnchor.constraint(equalTo: mainStackView.widthAnchor)
-        ])
     }
 
     private func makeCell(for position: Position) -> BoardCell {
@@ -101,6 +142,10 @@ final class GameView: UIView {
         let newHeightClass = HeightClass(screenHeight: bounds.height)
         guard newHeightClass != heightClass else { return }
         heightClass = newHeightClass
+        contentStackView.spacing = Spacing.betweenBlocks(for: newHeightClass)
+        for constraint in playerCardHeightConstraints {
+            constraint.constant = Size.playerCardHeight(for: newHeightClass)
+        }
         for cell in cells.values {
             cell.apply(newHeightClass)
         }

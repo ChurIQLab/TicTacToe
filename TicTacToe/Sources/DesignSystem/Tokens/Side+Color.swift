@@ -14,4 +14,11 @@ extension Side {
         case .second: .secondSide
         }
     }
+
+    var tintColor: UIColor {
+        switch self {
+        case .first: .firstSideTint
+        case .second: .secondSideTint
+        }
+    }
 }
