@@ -46,36 +46,52 @@ struct GamePresenterTests {
         #expect(view.boardEvents == [.resetBoard, .showFigure(.cross, .first, cell)])
     }
 
-    @Test func firstPlayerWinShowsWinnerMessage() throws {
+    @Test func firstPlayerWinShowsResultAndLine() throws {
         let (presenter, view) = makePresenter()
-        let expectedMessage = String(localized: .winnerMessage(String(localized: .firstPlayerName)))
+        let expectedResult = GameResultViewModel(
+            title: String(localized: .winnerTitle(String(localized: .firstPlayerName))),
+            score: String(localized: .scoreSubtitle(1, 0)),
+            figures: [SideFigure(side: .first, figure: .cross)],
+            winner: .first
+        )
 
         try tap(firstSideWin, on: presenter)
 
         #expect(view.events.last == .showGameOver(
-            expectedMessage,
+            expectedResult,
             WinningLineViewModel(side: .first, start: try position(0, 0), end: try position(0, 2))
         ))
     }
 
-    @Test func secondPlayerWinShowsWinnerMessage() throws {
+    @Test func secondPlayerWinShowsResultAndLine() throws {
         let (presenter, view) = makePresenter()
-        let expectedMessage = String(localized: .winnerMessage(String(localized: .secondPlayerName)))
+        let expectedResult = GameResultViewModel(
+            title: String(localized: .winnerTitle(String(localized: .secondPlayerName))),
+            score: String(localized: .scoreSubtitle(0, 1)),
+            figures: [SideFigure(side: .second, figure: .circle)],
+            winner: .second
+        )
 
         try tap([(1, 0), (0, 0), (1, 1), (0, 1), (2, 2), (0, 2)], on: presenter)
 
         #expect(view.events.last == .showGameOver(
-            expectedMessage,
+            expectedResult,
             WinningLineViewModel(side: .second, start: try position(0, 0), end: try position(0, 2))
         ))
     }
 
-    @Test func fullBoardWithoutLineShowsDraw() throws {
+    @Test func fullBoardShowsDrawWithBothFiguresAndNoLine() throws {
         let (presenter, view) = makePresenter()
+        let expectedResult = GameResultViewModel(
+            title: String(localized: .drawMessage),
+            score: String(localized: .scoreSubtitle(0, 0)),
+            figures: [SideFigure(side: .first, figure: .cross), SideFigure(side: .second, figure: .circle)],
+            winner: nil
+        )
 
         try tap(draw, on: presenter)
 
-        #expect(view.events.last == .showGameOver(String(localized: .drawMessage), nil))
+        #expect(view.events.last == .showGameOver(expectedResult, nil))
     }
 
     @Test func tapAfterGameOverIsIgnored() throws {

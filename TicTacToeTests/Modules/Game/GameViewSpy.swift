@@ -61,8 +61,8 @@ extension GameViewSpy: GameViewProtocol {
         events.append(.updateStatus(status))
     }
 
-    func showGameOver(message: String, winningLine: WinningLineViewModel?) {
-        events.append(.showGameOver(message, winningLine))
+    func showGameOver(_ result: GameResultViewModel, winningLine: WinningLineViewModel?) {
+        events.append(.showGameOver(result, winningLine))
     }
 }
 
@@ -75,6 +75,6 @@ extension GameViewSpy {
         case resetBoard
         case updatePlayers([PlayerCardViewModel])
         case updateStatus(GameStatusViewModel)
-        case showGameOver(String, WinningLineViewModel?)
+        case showGameOver(GameResultViewModel, WinningLineViewModel?)
     }
 }
