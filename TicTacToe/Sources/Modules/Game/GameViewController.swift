@@ -84,6 +84,10 @@ extension GameViewController: GameViewProtocol {
         gameView.updatePlayers(players)
     }
 
+    func updateStatus(_ status: GameStatusViewModel) {
+        gameView.updateStatus(status)
+    }
+
     func showGameOver(message: String) {
         let alert = UIAlertController(
             title: String(localized: .gameOverTitle),

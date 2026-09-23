@@ -24,3 +24,19 @@ extension PlayerCardViewModel {
         case neutral
     }
 }
+
+// MARK: - GameStatusViewModel
+
+nonisolated struct GameStatusViewModel: Equatable, Sendable {
+    let text: String
+    /// The player named in `text`: the name is highlighted and preceded by the figure
+    let player: Player?
+}
+
+extension GameStatusViewModel {
+    nonisolated struct Player: Equatable, Sendable {
+        let side: Side
+        let figure: Figure
+        let name: String
+    }
+}

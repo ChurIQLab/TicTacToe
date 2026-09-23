@@ -35,4 +35,20 @@ extension Figure {
             )
         }
     }
+
+    // MARK: - Methods
+
+    /// Draws the outline for inline use in text, e.g. in a text attachment
+    func image(size: CGFloat, color: UIColor) -> UIImage {
+        let scale = size / Self.gridSize
+        let path = path
+        path.apply(CGAffineTransform(scaleX: scale, y: scale))
+        path.lineWidth = Self.lineWidth * scale
+        path.lineCapStyle = .round
+        path.lineJoinStyle = .round
+        return UIGraphicsImageRenderer(size: CGSize(width: size, height: size)).image { _ in
+            color.setStroke()
+            path.stroke()
+        }
+    }
 }

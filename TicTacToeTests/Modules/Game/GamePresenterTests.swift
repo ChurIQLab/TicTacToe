@@ -130,6 +130,38 @@ struct GamePresenterTests {
         #expect(view.players.map(\.state) == [.neutral, .neutral])
     }
 
+    @Test func statusShowsWhoseTurnItIs() throws {
+        let (presenter, view) = makePresenter()
+        let secondName = String(localized: .secondPlayerName)
+
+        presenter.didTapCell(at: try position(0, 0))
+
+        #expect(view.status == GameStatusViewModel(
+            text: String(localized: .turnStatus(secondName)),
+            player: GameStatusViewModel.Player(side: .second, figure: .circle, name: secondName)
+        ))
+    }
+
+    @Test func statusShowsWinner() throws {
+        let (presenter, view) = makePresenter()
+        let firstName = String(localized: .firstPlayerName)
+
+        try tap(firstSideWin, on: presenter)
+
+        #expect(view.status == GameStatusViewModel(
+            text: String(localized: .winStatus(firstName)),
+            player: GameStatusViewModel.Player(side: .first, figure: .cross, name: firstName)
+        ))
+    }
+
+    @Test func statusShowsDraw() throws {
+        let (presenter, view) = makePresenter()
+
+        try tap(draw, on: presenter)
+
+        #expect(view.status == GameStatusViewModel(text: String(localized: .drawMessage), player: nil))
+    }
+
     @Test func newGameAfterFinishedGameAlternatesFirstSideAndKeepsScore() throws {
         let (presenter, view) = makePresenter()
         try tap(firstSideWin, on: presenter)

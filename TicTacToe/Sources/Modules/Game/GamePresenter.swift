@@ -22,7 +22,7 @@ final class GamePresenter {
     private func startNewGame() {
         engine = GameEngine(firstSide: firstSide)
         view?.resetBoard()
-        updatePlayers()
+        updatePanels()
     }
 
     private func finishGame(with result: GameResult) {
@@ -30,6 +30,11 @@ final class GamePresenter {
             scores[side, default: 0] += 1
         }
         firstSide = firstSide.opponent
+    }
+
+    private func updatePanels() {
+        updatePlayers()
+        updateStatus()
     }
 
     private func updatePlayers() {
@@ -43,6 +48,28 @@ final class GamePresenter {
             )
         }
         view?.updatePlayers(players)
+    }
+
+    private func updateStatus() {
+        let status = switch engine.result {
+        case .draw:
+            GameStatusViewModel(text: String(localized: .drawMessage), player: nil)
+        case .win(let winner, _):
+            GameStatusViewModel(
+                text: String(localized: .winStatus(name(for: winner))),
+                player: statusPlayer(for: winner)
+            )
+        case nil:
+            GameStatusViewModel(
+                text: String(localized: .turnStatus(name(for: engine.currentSide))),
+                player: statusPlayer(for: engine.currentSide)
+            )
+        }
+        view?.updateStatus(status)
+    }
+
+    private func statusPlayer(for side: Side) -> GameStatusViewModel.Player {
+        GameStatusViewModel.Player(side: side, figure: figure(for: side), name: name(for: side))
     }
 
     private func cardState(for side: Side) -> PlayerCardViewModel.State {
@@ -95,11 +122,11 @@ extension GamePresenter: GamePresenterProtocol {
         view?.showFigure(figure(for: side), for: side, at: position)
 
         guard let result = engine.result else {
-            updatePlayers()
+            updatePanels()
             return
         }
         finishGame(with: result)
-        updatePlayers()
+        updatePanels()
         view?.showGameOver(message: message(for: result))
     }
 

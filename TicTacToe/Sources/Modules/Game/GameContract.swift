@@ -10,6 +10,7 @@ protocol GameViewProtocol: AnyObject {
     func showFigure(_ figure: Figure, for side: Side, at position: Position)
     func resetBoard()
     func updatePlayers(_ players: [PlayerCardViewModel])
+    func updateStatus(_ status: GameStatusViewModel)
     func showGameOver(message: String)
 }
 

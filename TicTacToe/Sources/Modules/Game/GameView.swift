@@ -23,6 +23,7 @@ final class GameView: UIView {
     private let contentStackView = UIStackView()
     private let playersStackView = UIStackView()
     private let boardStackView = UIStackView()
+    private let statusView = GameStatusView()
 
     // MARK: - Lifecycle
 
@@ -54,6 +55,10 @@ final class GameView: UIView {
         }
     }
 
+    func updateStatus(_ status: GameStatusViewModel) {
+        statusView.configure(with: status)
+    }
+
     func reset() {
         for cell in cells.values {
             cell.clear()
@@ -72,6 +77,7 @@ final class GameView: UIView {
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.addArrangedSubview(playersStackView)
         contentStackView.addArrangedSubview(boardStackView)
+        contentStackView.addArrangedSubview(statusView)
         addSubview(contentStackView)
 
         let safeArea = safeAreaLayoutGuide
