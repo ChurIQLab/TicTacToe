@@ -21,7 +21,7 @@ struct GamePresenterTests {
         #expect(view.events == [.resetBoard])
     }
 
-    @Test func tapsShowSymbolsOfAlternatingSides() throws {
+    @Test func tapsShowFiguresOfAlternatingSides() throws {
         let (presenter, view) = makePresenter()
         let firstCell = try position(0, 0)
         let secondCell = try position(1, 1)
@@ -31,8 +31,8 @@ struct GamePresenterTests {
 
         #expect(view.events == [
             .resetBoard,
-            .showSymbol("X", .first, firstCell),
-            .showSymbol("O", .second, secondCell)
+            .showFigure(.cross, .first, firstCell),
+            .showFigure(.circle, .second, secondCell)
         ])
     }
 
@@ -43,7 +43,7 @@ struct GamePresenterTests {
         presenter.didTapCell(at: cell)
         presenter.didTapCell(at: cell)
 
-        #expect(view.events == [.resetBoard, .showSymbol("X", .first, cell)])
+        #expect(view.events == [.resetBoard, .showFigure(.cross, .first, cell)])
     }
 
     @Test func firstPlayerWinShowsWinnerMessage() throws {
@@ -91,7 +91,7 @@ struct GamePresenterTests {
         presenter.didTapNewGame()
         presenter.didTapCell(at: cell)
 
-        #expect(Array(view.events.suffix(2)) == [.resetBoard, .showSymbol("X", .first, cell)])
+        #expect(Array(view.events.suffix(2)) == [.resetBoard, .showFigure(.cross, .first, cell)])
     }
 }
 

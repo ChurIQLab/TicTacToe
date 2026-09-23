@@ -21,10 +21,10 @@ final class GamePresenter {
         view?.resetBoard()
     }
 
-    private func symbol(for side: Side) -> String {
+    private func figure(for side: Side) -> Figure {
         switch side {
-        case .first: "X"
-        case .second: "O"
+        case .first: .cross
+        case .second: .circle
         }
     }
 
@@ -59,7 +59,7 @@ extension GamePresenter: GamePresenterProtocol {
             return
         }
 
-        view?.showSymbol(symbol(for: side), for: side, at: position)
+        view?.showFigure(figure(for: side), for: side, at: position)
 
         if let result = engine.result {
             view?.showGameOver(message: message(for: result))

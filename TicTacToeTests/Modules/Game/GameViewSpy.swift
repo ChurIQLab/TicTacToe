@@ -17,8 +17,8 @@ final class GameViewSpy {
 // MARK: - GameViewProtocol
 
 extension GameViewSpy: GameViewProtocol {
-    func showSymbol(_ symbol: String, for side: Side, at position: Position) {
-        events.append(.showSymbol(symbol, side, position))
+    func showFigure(_ figure: Figure, for side: Side, at position: Position) {
+        events.append(.showFigure(figure, side, position))
     }
 
     func resetBoard() {
@@ -34,7 +34,7 @@ extension GameViewSpy: GameViewProtocol {
 
 extension GameViewSpy {
     nonisolated enum Event: Equatable {
-        case showSymbol(String, Side, Position)
+        case showFigure(Figure, Side, Position)
         case resetBoard
         case showGameOver(String)
     }

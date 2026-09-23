@@ -6,7 +6,7 @@
 //
 
 protocol GameViewProtocol: AnyObject {
-    func showSymbol(_ symbol: String, for side: Side, at position: Position)
+    func showFigure(_ figure: Figure, for side: Side, at position: Position)
     func resetBoard()
     func showGameOver(message: String)
 }

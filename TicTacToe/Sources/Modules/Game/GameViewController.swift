@@ -43,8 +43,8 @@ final class GameViewController: UIViewController {
 // MARK: - GameViewProtocol
 
 extension GameViewController: GameViewProtocol {
-    func showSymbol(_ symbol: String, for side: Side, at position: Position) {
-        gameView.setSymbol(symbol, for: side, at: position)
+    func showFigure(_ figure: Figure, for side: Side, at position: Position) {
+        gameView.showFigure(figure, for: side, at: position)
     }
 
     func resetBoard() {
