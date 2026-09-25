@@ -31,13 +31,13 @@ struct MenuPresenterTests {
     }
 
     @Test(arguments: GameMode.allCases)
-    func selectingModeShowsGame(mode: GameMode) {
+    func selectingModeShowsGameSetup(mode: GameMode) {
         let router = RouterSpy()
         let (presenter, _) = makePresenter(router: router)
 
         presenter.didSelectMode(mode)
 
-        #expect(router.events == [.showGame(mode)])
+        #expect(router.events == [.showGameSetup(mode)])
     }
 
     @Test func tapOnSettingsShowsSettings() {

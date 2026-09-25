@@ -16,6 +16,6 @@ protocol MenuPresenterProtocol: AnyObject {
 }
 
 protocol MenuRouting: AnyObject {
-    func showGame(mode: GameMode)
+    func showGameSetup(mode: GameMode)
     func showSettings()
 }

@@ -33,11 +33,20 @@ final class AppRouter {
 // MARK: - MenuRouting
 
 extension AppRouter: MenuRouting {
-    func showGame(mode: GameMode) {
-        navigationController?.pushViewController(GameModuleBuilder.build(mode: mode), animated: true)
+    func showGameSetup(mode: GameMode) {
+        let gameSetupViewController = GameSetupModuleBuilder.build(mode: mode, router: self)
+        navigationController?.pushViewController(gameSetupViewController, animated: true)
     }
 
     func showSettings() {
         navigationController?.pushViewController(SettingsModuleBuilder.build(), animated: true)
+    }
+}
+
+// MARK: - GameSetupRouting
+
+extension AppRouter: GameSetupRouting {
+    func showGame(mode: GameMode) {
+        navigationController?.pushViewController(GameModuleBuilder.build(mode: mode), animated: true)
     }
 }

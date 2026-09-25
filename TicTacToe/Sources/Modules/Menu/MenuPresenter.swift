@@ -30,7 +30,7 @@ extension MenuPresenter: MenuPresenterProtocol {
     }
 
     func didSelectMode(_ mode: GameMode) {
-        router.showGame(mode: mode)
+        router.showGameSetup(mode: mode)
     }
 
     func didTapSettings() {

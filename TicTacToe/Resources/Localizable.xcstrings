@@ -163,6 +163,24 @@
         }
       }
     },
+    "playButton" : {
+      "comment" : "Button on the game setup screen that starts the game",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Играть"
+          }
+        }
+      }
+    },
     "restartButton" : {
       "comment" : "Accessibility label of the navigation bar button that restarts the game",
       "extractionState" : "manual",

@@ -17,8 +17,8 @@ final class RouterSpy {
 // MARK: - MenuRouting
 
 extension RouterSpy: MenuRouting {
-    func showGame(mode: GameMode) {
-        events.append(.showGame(mode))
+    func showGameSetup(mode: GameMode) {
+        events.append(.showGameSetup(mode))
     }
 
     func showSettings() {
@@ -26,11 +26,20 @@ extension RouterSpy: MenuRouting {
     }
 }
 
+// MARK: - GameSetupRouting
+
+extension RouterSpy: GameSetupRouting {
+    func showGame(mode: GameMode) {
+        events.append(.showGame(mode))
+    }
+}
+
 // MARK: - Event
 
 extension RouterSpy {
     nonisolated enum Event: Equatable {
-        case showGame(GameMode)
+        case showGameSetup(GameMode)
         case showSettings
+        case showGame(GameMode)
     }
 }
