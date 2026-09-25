@@ -356,7 +356,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Победил %@"
+            "value" : "Победа: %@"
           }
         }
       }
@@ -374,7 +374,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Победил %@"
+            "value" : "Победа: %@"
           }
         }
       }
