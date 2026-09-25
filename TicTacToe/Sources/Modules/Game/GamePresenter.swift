@@ -103,14 +103,7 @@ final class GamePresenter {
     }
 
     private func name(for side: Side) -> String {
-        configuration.names[side] ?? defaultName(for: side)
-    }
-
-    private func defaultName(for side: Side) -> String {
-        switch side {
-        case .first: String(localized: .firstPlayerName)
-        case .second: String(localized: .secondPlayerName)
-        }
+        configuration.names[side] ?? side.defaultPlayerName
     }
 
     private func winningLine(for result: GameResult) -> WinningLineViewModel? {

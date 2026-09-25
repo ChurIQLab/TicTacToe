@@ -28,4 +28,23 @@ struct GameConfigurationTests {
 
         #expect(configuration.names == [.first: "Анна Мария"])
     }
+
+    @Test func longNameIsCutToMaxLength() {
+        let configuration = GameConfiguration(mode: .twoPlayers, names: [.first: "Александра Константиновна"])
+
+        #expect(configuration.names[.first] == "Александра Конст")
+    }
+
+    @Test func cutNameDoesNotEndWithSpace() {
+        let configuration = GameConfiguration(mode: .twoPlayers, names: [.first: "Максимилианович Иван"])
+
+        #expect(configuration.names[.first] == "Максимилианович")
+    }
+
+    @Test func emojiCountsAsOneCharacter() {
+        let name = String(repeating: "👩‍👩‍👧", count: GameConfiguration.maxNameLength)
+        let configuration = GameConfiguration(mode: .twoPlayers, names: [.first: name])
+
+        #expect(configuration.names[.first] == name)
+    }
 }
