@@ -5,6 +5,8 @@
 //  Created by Churkin Vitaly on 23.09.2026.
 //
 
+import Foundation
+
 nonisolated struct PlayerCardViewModel: Equatable, Sendable {
     let side: Side
     let figure: Figure
@@ -38,6 +40,39 @@ extension GameStatusViewModel {
         let side: Side
         let figure: Figure
         let name: String
+        /// Where the name is in `text`: a name may repeat a word of the phrase, so it is not searched for
+        let nameRange: NSRange
+    }
+}
+
+// MARK: - Initial
+
+extension GameStatusViewModel {
+    /// Puts the player's name into a localized phrase, such as `{ String(localized: .turnStatus($0)) }`,
+    /// and keeps the place where the phrase put it
+    init(side: Side, figure: Figure, name: String, phrase: (String) -> String) {
+        let template = phrase(Constants.namePlaceholder) as NSString
+        let placeholderRange = template.range(of: Constants.namePlaceholder)
+        guard placeholderRange.location != NSNotFound else {
+            self.init(text: phrase(name), player: nil)
+            return
+        }
+
+        let text = template.replacingCharacters(in: placeholderRange, with: name)
+        let nameRange = NSRange(location: placeholderRange.location, length: (name as NSString).length)
+        self.init(
+            text: text,
+            player: Player(side: side, figure: figure, name: name, nameRange: nameRange)
+        )
+    }
+}
+
+// MARK: - Constants
+
+extension GameStatusViewModel {
+    nonisolated struct Constants {
+        /// A private use character: it is not typed in names and not used in translations
+        static let namePlaceholder = "\u{E000}"
     }
 }
 

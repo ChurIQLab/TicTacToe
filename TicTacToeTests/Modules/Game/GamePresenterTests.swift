@@ -166,10 +166,9 @@ struct GamePresenterTests {
 
         presenter.didTapCell(at: try position(0, 0))
 
-        #expect(view.status == GameStatusViewModel(
-            text: String(localized: .turnStatus(secondName)),
-            player: GameStatusViewModel.Player(side: .second, figure: .circle, name: secondName)
-        ))
+        #expect(view.status == GameStatusViewModel(side: .second, figure: .circle, name: secondName) {
+            String(localized: .turnStatus($0))
+        })
     }
 
     @Test func statusShowsWinner() throws {
@@ -178,10 +177,9 @@ struct GamePresenterTests {
 
         try tap(firstSideWin, on: presenter)
 
-        #expect(view.status == GameStatusViewModel(
-            text: String(localized: .winStatus(firstName)),
-            player: GameStatusViewModel.Player(side: .first, figure: .cross, name: firstName)
-        ))
+        #expect(view.status == GameStatusViewModel(side: .first, figure: .cross, name: firstName) {
+            String(localized: .winStatus($0))
+        })
     }
 
     @Test func statusShowsDraw() throws {
@@ -264,10 +262,9 @@ struct GamePresenterTests {
 
         presenter.didTapCell(at: try position(0, 0))
 
-        #expect(view.status == GameStatusViewModel(
-            text: String(localized: .turnStatus("Макс")),
-            player: GameStatusViewModel.Player(side: .second, figure: .circle, name: "Макс")
-        ))
+        #expect(view.status == GameStatusViewModel(side: .second, figure: .circle, name: "Макс") {
+            String(localized: .turnStatus($0))
+        })
     }
 
     @Test func enteredNameOfWinnerIsShownInResult() throws {
