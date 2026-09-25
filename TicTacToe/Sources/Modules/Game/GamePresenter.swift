@@ -12,7 +12,7 @@ final class GamePresenter {
     // MARK: - Properties
 
     weak var view: GameViewProtocol?
-    private let mode: GameMode
+    private let configuration: GameConfiguration
     private let router: GameRouting
     private let haptics: HapticsServiceProtocol
     private var engine = GameEngine()
@@ -22,8 +22,8 @@ final class GamePresenter {
 
     // MARK: - Initial
 
-    init(mode: GameMode, router: GameRouting, haptics: HapticsServiceProtocol) {
-        self.mode = mode
+    init(configuration: GameConfiguration, router: GameRouting, haptics: HapticsServiceProtocol) {
+        self.configuration = configuration
         self.router = router
         self.haptics = haptics
     }
@@ -103,6 +103,10 @@ final class GamePresenter {
     }
 
     private func name(for side: Side) -> String {
+        configuration.names[side] ?? defaultName(for: side)
+    }
+
+    private func defaultName(for side: Side) -> String {
         switch side {
         case .first: String(localized: .firstPlayerName)
         case .second: String(localized: .secondPlayerName)
@@ -143,7 +147,7 @@ final class GamePresenter {
 
 extension GamePresenter: GamePresenterProtocol {
     func viewDidLoad() {
-        view?.setTitle(mode.title)
+        view?.setTitle(configuration.mode.title)
         startNewGame()
     }
 

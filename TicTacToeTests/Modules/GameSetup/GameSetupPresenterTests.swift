@@ -32,7 +32,7 @@ struct GameSetupPresenterTests {
 
         presenter.didTapPlay()
 
-        #expect(router.events == [.showGame(mode)])
+        #expect(router.events == [.showGame(GameConfiguration(mode: mode))])
     }
 }
 

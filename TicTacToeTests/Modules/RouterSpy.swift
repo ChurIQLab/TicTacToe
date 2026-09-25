@@ -29,8 +29,8 @@ extension RouterSpy: MenuRouting {
 // MARK: - GameSetupRouting
 
 extension RouterSpy: GameSetupRouting {
-    func showGame(mode: GameMode) {
-        events.append(.showGame(mode))
+    func showGame(configuration: GameConfiguration) {
+        events.append(.showGame(configuration))
     }
 }
 
@@ -48,7 +48,7 @@ extension RouterSpy {
     nonisolated enum Event: Equatable {
         case showGameSetup(GameMode)
         case showSettings
-        case showGame(GameMode)
+        case showGame(GameConfiguration)
         case showMenu
     }
 }
