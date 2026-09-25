@@ -122,6 +122,7 @@ nonisolated struct PaletteColor: Sendable, CustomTestStringConvertible {
         PaletteColor(name: "SegmentTrackInCard", light: "#EDEDF1", dark: "#2C2C31"),
         PaletteColor(name: "SegmentThumb", light: "#FFFFFF", dark: "#3A3A40"),
         PaletteColor(name: "SegmentThumbInCard", light: "#FFFFFF", dark: "#48484F"),
+        PaletteColor(name: "IconBackground", light: "#F7F6FA", dark: "#17171B"),
         PaletteColor(name: "Scrim", light: "#0F0F1440", dark: "#00000080"),
         PaletteColor(name: "AccentColor", light: "#1A1A1E", dark: "#F3F3F6")
     ]
@@ -157,7 +158,9 @@ nonisolated struct ContrastPair: Sendable, CustomTestStringConvertible {
         ContrastPair(foreground: "FirstSide", background: "Surface", minimum: figureMinimum),
         ContrastPair(foreground: "SecondSide", background: "Surface", minimum: figureMinimum),
         ContrastPair(foreground: "FirstSide", background: "FirstSideTint", minimum: figureMinimum),
-        ContrastPair(foreground: "SecondSide", background: "SecondSideTint", minimum: figureMinimum)
+        ContrastPair(foreground: "SecondSide", background: "SecondSideTint", minimum: figureMinimum),
+        ContrastPair(foreground: "FirstSide", background: "IconBackground", minimum: figureMinimum),
+        ContrastPair(foreground: "SecondSide", background: "IconBackground", minimum: figureMinimum)
     ]
 
     private static let textMinimum = 4.5

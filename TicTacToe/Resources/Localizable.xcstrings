@@ -1,6 +1,42 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "appSubtitle" : {
+      "comment" : "Line under the app name in the main menu",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tic Tac Toe"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Крестики-нолики"
+          }
+        }
+      }
+    },
+    "appTitle" : {
+      "comment" : "App name at the top of the main menu",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shape Duel"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дуэль фигур"
+          }
+        }
+      }
+    },
     "circleFigure" : {
       "comment" : "VoiceOver name of the circle figure",
       "extractionState" : "manual",
@@ -15,6 +51,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Нолик"
+          }
+        }
+      }
+    },
+    "computerSubtitle" : {
+      "comment" : "Description of the game against the computer in the main menu",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three difficulty levels"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Три уровня сложности"
+          }
+        }
+      }
+    },
+    "computerTitle" : {
+      "comment" : "Main menu item and screen title of the game against the computer",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Against the computer"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Против компьютера"
           }
         }
       }
@@ -145,6 +217,24 @@
         }
       }
     },
+    "settingsTitle" : {
+      "comment" : "Title of the settings screen and VoiceOver name of the settings button in the main menu",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки"
+          }
+        }
+      }
+    },
     "turnStatus" : {
       "comment" : "Status under the board while a game goes on; the argument is the name of the player who moves",
       "extractionState" : "manual",
@@ -159,6 +249,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ходит %@"
+          }
+        }
+      }
+    },
+    "twoPlayersSubtitle" : {
+      "comment" : "Description of the two-player game in the main menu",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On one phone"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На одном телефоне"
           }
         }
       }
