@@ -70,21 +70,15 @@ final class GamePresenter {
         case .draw:
             GameStatusViewModel(text: String(localized: .drawMessage), player: nil)
         case .win(let winner, _):
-            GameStatusViewModel(
-                text: String(localized: .winStatus(name(for: winner))),
-                player: statusPlayer(for: winner)
-            )
+            status(naming: winner) { String(localized: .winStatus($0)) }
         case nil:
-            GameStatusViewModel(
-                text: String(localized: .turnStatus(name(for: engine.currentSide))),
-                player: statusPlayer(for: engine.currentSide)
-            )
+            status(naming: engine.currentSide) { String(localized: .turnStatus($0)) }
         }
         view?.updateStatus(status)
     }
 
-    private func statusPlayer(for side: Side) -> GameStatusViewModel.Player {
-        GameStatusViewModel.Player(side: side, figure: figure(for: side), name: name(for: side))
+    private func status(naming side: Side, phrase: (String) -> String) -> GameStatusViewModel {
+        GameStatusViewModel(side: side, figure: figure(for: side), name: name(for: side), phrase: phrase)
     }
 
     private func cardState(for side: Side) -> PlayerCardViewModel.State {

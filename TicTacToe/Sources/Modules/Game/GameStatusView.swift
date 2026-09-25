@@ -71,19 +71,15 @@ final class GameStatusView: UIView {
         ])
         accessibilityLabel = status.text
 
-        guard
-            let player = status.player,
-            let nameRange = status.text.range(of: player.name)
-        else {
+        guard let player = status.player else {
             textLabel.attributedText = text
             return
         }
 
-        let nameNSRange = NSRange(nameRange, in: status.text)
         text.addAttributes([
             .font: Typography.accent.font(),
             .foregroundColor: UIColor.primaryText
-        ], range: nameNSRange)
+        ], range: player.nameRange)
 
         let color = player.side.color.resolvedColor(with: traitCollection)
         let attachment = NSTextAttachment(image: player.figure.image(size: Size.figureInStatus, color: color))
@@ -95,7 +91,7 @@ final class GameStatusView: UIView {
         )
         let figure = NSMutableAttributedString(attachment: attachment)
         figure.append(NSAttributedString(string: " ", attributes: [.font: textFont]))
-        text.insert(figure, at: nameNSRange.location)
+        text.insert(figure, at: player.nameRange.location)
 
         textLabel.attributedText = text
     }
