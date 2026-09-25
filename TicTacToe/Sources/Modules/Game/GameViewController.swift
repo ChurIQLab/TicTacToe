@@ -43,23 +43,12 @@ final class GameViewController: UIViewController {
     // MARK: - Setups
 
     private func setupNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.titleTextAttributes = [
-            .font: Typography.accent.font(),
-            .foregroundColor: UIColor.primaryText
-        ]
-        navigationItem.standardAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        navigationItem.compactAppearance = appearance
-
         let restartItem = UIBarButtonItem(
             image: UIImage(systemName: Constants.restartImageName),
             primaryAction: UIAction { [weak self] _ in
                 self?.presenter.didTapNewGame()
             }
         )
-        restartItem.tintColor = .primaryText
         restartItem.accessibilityLabel = String(localized: .restartButton)
         navigationItem.rightBarButtonItem = restartItem
     }
