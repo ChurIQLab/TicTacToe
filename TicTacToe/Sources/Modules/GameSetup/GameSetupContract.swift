@@ -15,5 +15,5 @@ protocol GameSetupPresenterProtocol: AnyObject {
 }
 
 protocol GameSetupRouting: AnyObject {
-    func showGame(mode: GameMode)
+    func showGame(configuration: GameConfiguration)
 }

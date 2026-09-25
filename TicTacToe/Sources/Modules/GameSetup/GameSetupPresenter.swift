@@ -31,6 +31,6 @@ extension GameSetupPresenter: GameSetupPresenterProtocol {
     }
 
     func didTapPlay() {
-        router.showGame(mode: mode)
+        router.showGame(configuration: GameConfiguration(mode: mode))
     }
 }

@@ -17,7 +17,11 @@ struct GamePresenterTests {
     ])
     func viewDidLoadSetsModeTitleAndResetsBoard(mode: GameMode, title: String) {
         let view = GameViewSpy()
-        let presenter = GamePresenter(mode: mode, router: RouterSpy(), haptics: HapticsServiceSpy())
+        let presenter = GamePresenter(
+            configuration: GameConfiguration(mode: mode),
+            router: RouterSpy(),
+            haptics: HapticsServiceSpy()
+        )
         presenter.view = view
 
         presenter.viewDidLoad()
@@ -243,6 +247,38 @@ struct GamePresenterTests {
         #expect(view.players.map(\.score) == [1, 0])
     }
 
+    @Test func enteredNamesAreShownOnCards() {
+        let (_, view) = makePresenter(names: enteredNames)
+
+        #expect(view.players.map(\.name) == ["Аня", "Макс"])
+    }
+
+    @Test func missingNameFallsBackToDefault() {
+        let (_, view) = makePresenter(names: [.second: "Макс"])
+
+        #expect(view.players.map(\.name) == [String(localized: .firstPlayerName), "Макс"])
+    }
+
+    @Test func enteredNamesAreShownInStatus() throws {
+        let (presenter, view) = makePresenter(names: enteredNames)
+
+        presenter.didTapCell(at: try position(0, 0))
+
+        #expect(view.status == GameStatusViewModel(
+            text: String(localized: .turnStatus("Макс")),
+            player: GameStatusViewModel.Player(side: .second, figure: .circle, name: "Макс")
+        ))
+    }
+
+    @Test func enteredNameOfWinnerIsShownInResult() throws {
+        let (presenter, view) = makePresenter(names: enteredNames)
+
+        try tap(firstSideWin, on: presenter)
+
+        #expect(view.status?.text == String(localized: .winStatus("Аня")))
+        #expect(view.result?.title == String(localized: .winnerTitle("Аня")))
+    }
+
     @Test func tapOnMenuShowsMenu() throws {
         let router = RouterSpy()
         let (presenter, _) = makePresenter(router: router)
@@ -263,6 +299,10 @@ extension GamePresenterTests {
         [(0, 0), (1, 0), (0, 1), (1, 1), (0, 2)]
     }
 
+    private var enteredNames: [Side: String] {
+        [.first: "Аня", .second: "Макс"]
+    }
+
     private var draw: [(Int, Int)] {
         [(0, 0), (0, 1), (0, 2), (1, 1), (1, 0), (1, 2), (2, 1), (2, 0), (2, 2)]
     }
@@ -271,10 +311,15 @@ extension GamePresenterTests {
 
     private func makePresenter(
         router: RouterSpy = RouterSpy(),
-        haptics: HapticsServiceSpy = HapticsServiceSpy()
+        haptics: HapticsServiceSpy = HapticsServiceSpy(),
+        names: [Side: String] = [:]
     ) -> (GamePresenter, GameViewSpy) {
         let view = GameViewSpy()
-        let presenter = GamePresenter(mode: .twoPlayers, router: router, haptics: haptics)
+        let presenter = GamePresenter(
+            configuration: GameConfiguration(mode: .twoPlayers, names: names),
+            router: router,
+            haptics: haptics
+        )
         presenter.view = view
         presenter.viewDidLoad()
         return (presenter, view)

@@ -8,8 +8,8 @@
 import UIKit
 
 struct GameModuleBuilder {
-    static func build(mode: GameMode, router: GameRouting) -> UIViewController {
-        let presenter = GamePresenter(mode: mode, router: router, haptics: HapticsService())
+    static func build(configuration: GameConfiguration, router: GameRouting) -> UIViewController {
+        let presenter = GamePresenter(configuration: configuration, router: router, haptics: HapticsService())
         let viewController = GameViewController(presenter: presenter)
         presenter.view = viewController
         return viewController

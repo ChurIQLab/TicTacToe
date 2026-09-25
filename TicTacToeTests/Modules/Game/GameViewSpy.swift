@@ -30,6 +30,13 @@ final class GameViewSpy {
         return nil
     }
 
+    var result: GameResultViewModel? {
+        for case .showGameOver(let result, _) in events.reversed() {
+            return result
+        }
+        return nil
+    }
+
     var players: [PlayerCardViewModel] {
         for case .updatePlayers(let players) in events.reversed() {
             return players
