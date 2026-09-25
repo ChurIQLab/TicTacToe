@@ -163,6 +163,24 @@
         }
       }
     },
+    "namesHint" : {
+      "comment" : "Hint under the name fields on the two-player setup screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Names are optional."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Имена можно не вводить."
+          }
+        }
+      }
+    },
     "playAgainButton" : {
       "comment" : "Game result sheet button that starts the next game",
       "extractionState" : "manual",

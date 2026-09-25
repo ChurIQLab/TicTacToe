@@ -7,10 +7,12 @@
 
 protocol GameSetupViewProtocol: AnyObject {
     func setTitle(_ title: String)
+    func showNameFields(_ fields: [NameFieldViewModel], hint: String)
 }
 
 protocol GameSetupPresenterProtocol: AnyObject {
     func viewDidLoad()
+    func didChangeName(_ name: String, for side: Side)
     func didTapPlay()
 }
 

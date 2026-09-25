@@ -23,7 +23,11 @@ final class GameSetupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView.onPlayTap = { [weak self] in
+            self?.view.endEditing(true)
             self?.presenter.didTapPlay()
+        }
+        setupView.onNameChange = { [weak self] name, side in
+            self?.presenter.didChangeName(name, for: side)
         }
         presenter.viewDidLoad()
     }
@@ -45,5 +49,9 @@ final class GameSetupViewController: UIViewController {
 extension GameSetupViewController: GameSetupViewProtocol {
     func setTitle(_ title: String) {
         navigationItem.title = title
+    }
+
+    func showNameFields(_ fields: [NameFieldViewModel], hint: String) {
+        setupView.showNameFields(fields, hint: hint)
     }
 }
