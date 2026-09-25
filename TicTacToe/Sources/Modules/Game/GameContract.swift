@@ -18,4 +18,9 @@ protocol GamePresenterProtocol: AnyObject {
     func viewDidLoad()
     func didTapCell(at position: Position)
     func didTapNewGame()
+    func didTapMenu()
+}
+
+protocol GameRouting: AnyObject {
+    func showMenu()
 }

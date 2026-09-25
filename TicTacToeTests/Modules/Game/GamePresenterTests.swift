@@ -17,7 +17,7 @@ struct GamePresenterTests {
     ])
     func viewDidLoadSetsModeTitleAndResetsBoard(mode: GameMode, title: String) {
         let view = GameViewSpy()
-        let presenter = GamePresenter(mode: mode, haptics: HapticsServiceSpy())
+        let presenter = GamePresenter(mode: mode, router: RouterSpy(), haptics: HapticsServiceSpy())
         presenter.view = view
 
         presenter.viewDidLoad()
@@ -242,6 +242,16 @@ struct GamePresenterTests {
         #expect(Array(view.boardEvents.suffix(2)) == [.resetBoard, .showFigure(.circle, .second, cell)])
         #expect(view.players.map(\.score) == [1, 0])
     }
+
+    @Test func tapOnMenuShowsMenu() throws {
+        let router = RouterSpy()
+        let (presenter, _) = makePresenter(router: router)
+        try tap(firstSideWin, on: presenter)
+
+        presenter.didTapMenu()
+
+        #expect(router.events == [.showMenu])
+    }
 }
 
 extension GamePresenterTests {
@@ -259,9 +269,12 @@ extension GamePresenterTests {
 
     // MARK: - Private methods
 
-    private func makePresenter(haptics: HapticsServiceSpy = HapticsServiceSpy()) -> (GamePresenter, GameViewSpy) {
+    private func makePresenter(
+        router: RouterSpy = RouterSpy(),
+        haptics: HapticsServiceSpy = HapticsServiceSpy()
+    ) -> (GamePresenter, GameViewSpy) {
         let view = GameViewSpy()
-        let presenter = GamePresenter(mode: .twoPlayers, haptics: haptics)
+        let presenter = GamePresenter(mode: .twoPlayers, router: router, haptics: haptics)
         presenter.view = view
         presenter.viewDidLoad()
         return (presenter, view)

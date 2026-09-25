@@ -8,13 +8,14 @@
 import UIKit
 
 /// Bottom sheet with the result of a finished game. Only draws the result:
-/// the button action goes to the game presenter through `onPlayAgain`
+/// the button actions go to the game presenter through `onPlayAgain` and `onMenu`
 final class GameResultViewController: UIViewController {
 
     // MARK: - Properties
 
     private let result: GameResultViewModel
     private let onPlayAgain: () -> Void
+    private let onMenu: () -> Void
     private let sheetTransitioningDelegate = BottomSheetTransitioningDelegate()
 
     // MARK: - Outlets
@@ -44,9 +45,10 @@ final class GameResultViewController: UIViewController {
 
     // MARK: - Initial
 
-    init(result: GameResultViewModel, onPlayAgain: @escaping () -> Void) {
+    init(result: GameResultViewModel, onPlayAgain: @escaping () -> Void, onMenu: @escaping () -> Void) {
         self.result = result
         self.onPlayAgain = onPlayAgain
+        self.onMenu = onMenu
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .custom
         transitioningDelegate = sheetTransitioningDelegate
@@ -88,7 +90,20 @@ final class GameResultViewController: UIViewController {
             self?.playAgain()
         }, for: .touchUpInside)
 
-        let contentStackView = UIStackView(arrangedSubviews: [grabberView, badgeView, textStackView, playAgainButton])
+        let menuButton = CapsuleButton(
+            title: String(localized: .menuButton),
+            style: .secondary,
+            height: Size.sheetButtonHeight
+        )
+        menuButton.addAction(UIAction { [weak self] _ in
+            self?.goToMenu()
+        }, for: .touchUpInside)
+
+        let buttonsStackView = UIStackView(arrangedSubviews: [playAgainButton, menuButton])
+        buttonsStackView.axis = .vertical
+        buttonsStackView.spacing = Constants.buttonSpacing
+
+        let contentStackView = UIStackView(arrangedSubviews: [grabberView, badgeView, textStackView, buttonsStackView])
         contentStackView.axis = .vertical
         contentStackView.alignment = .center
         contentStackView.spacing = Constants.contentSpacing
@@ -102,7 +117,7 @@ final class GameResultViewController: UIViewController {
             contentStackView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
             textStackView.widthAnchor.constraint(equalTo: contentStackView.widthAnchor),
-            playAgainButton.widthAnchor.constraint(equalTo: contentStackView.widthAnchor)
+            buttonsStackView.widthAnchor.constraint(equalTo: contentStackView.widthAnchor)
         ])
     }
 
@@ -149,6 +164,13 @@ final class GameResultViewController: UIViewController {
         onPlayAgain()
         dismiss(animated: true)
     }
+
+    /// The menu opens after the sheet is closed: the navigation stack cannot pop under a presented sheet
+    private func goToMenu() {
+        dismiss(animated: true) { [onMenu] in
+            onMenu()
+        }
+    }
 }
 
 // MARK: - Constants
@@ -162,5 +184,6 @@ extension GameResultViewController {
         static let figureSpacing: CGFloat = 2
         static let contentSpacing: CGFloat = 20
         static let textSpacing: CGFloat = 6
+        static let buttonSpacing: CGFloat = 10
     }
 }

@@ -88,9 +88,15 @@ extension GameViewController: GameViewProtocol {
 
 extension GameViewController {
     private func presentResult(_ result: GameResultViewModel) {
-        let resultViewController = GameResultViewController(result: result) { [weak self] in
-            self?.presenter.didTapNewGame()
-        }
+        let resultViewController = GameResultViewController(
+            result: result,
+            onPlayAgain: { [weak self] in
+                self?.presenter.didTapNewGame()
+            },
+            onMenu: { [weak self] in
+                self?.presenter.didTapMenu()
+            }
+        )
         present(resultViewController, animated: true)
     }
 }
