@@ -47,6 +47,14 @@ extension AppRouter: MenuRouting {
 
 extension AppRouter: GameSetupRouting {
     func showGame(mode: GameMode) {
-        navigationController?.pushViewController(GameModuleBuilder.build(mode: mode), animated: true)
+        navigationController?.pushViewController(GameModuleBuilder.build(mode: mode, router: self), animated: true)
+    }
+}
+
+// MARK: - GameRouting
+
+extension AppRouter: GameRouting {
+    func showMenu() {
+        navigationController?.popToRootViewController(animated: true)
     }
 }

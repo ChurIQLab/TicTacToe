@@ -34,6 +34,14 @@ extension RouterSpy: GameSetupRouting {
     }
 }
 
+// MARK: - GameRouting
+
+extension RouterSpy: GameRouting {
+    func showMenu() {
+        events.append(.showMenu)
+    }
+}
+
 // MARK: - Event
 
 extension RouterSpy {
@@ -41,5 +49,6 @@ extension RouterSpy {
         case showGameSetup(GameMode)
         case showSettings
         case showGame(GameMode)
+        case showMenu
     }
 }

@@ -13,6 +13,7 @@ final class GamePresenter {
 
     weak var view: GameViewProtocol?
     private let mode: GameMode
+    private let router: GameRouting
     private let haptics: HapticsServiceProtocol
     private var engine = GameEngine()
     /// Alternates after every finished game; a restarted game keeps its first side
@@ -21,8 +22,9 @@ final class GamePresenter {
 
     // MARK: - Initial
 
-    init(mode: GameMode, haptics: HapticsServiceProtocol) {
+    init(mode: GameMode, router: GameRouting, haptics: HapticsServiceProtocol) {
         self.mode = mode
+        self.router = router
         self.haptics = haptics
     }
 
@@ -168,5 +170,9 @@ extension GamePresenter: GamePresenterProtocol {
 
     func didTapNewGame() {
         startNewGame()
+    }
+
+    func didTapMenu() {
+        router.showMenu()
     }
 }

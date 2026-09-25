@@ -145,6 +145,24 @@
         }
       }
     },
+    "menuButton" : {
+      "comment" : "Button on the game result sheet that returns to the main menu",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В меню"
+          }
+        }
+      }
+    },
     "playAgainButton" : {
       "comment" : "Game result sheet button that starts the next game",
       "extractionState" : "manual",
