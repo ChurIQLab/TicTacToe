@@ -10,6 +10,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    private var router: AppRouter?
 
     func scene(
         _ scene: UIScene,
@@ -18,8 +19,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let viewController = GameModuleBuilder.build()
-        let navigationController = NavigationController(rootViewController: viewController)
+        let navigationController = NavigationController()
+        let router = AppRouter(navigationController: navigationController)
+        router.start()
+        self.router = router
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }

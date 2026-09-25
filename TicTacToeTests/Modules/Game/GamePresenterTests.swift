@@ -11,14 +11,18 @@ import Testing
 
 struct GamePresenterTests {
 
-    @Test func viewDidLoadSetsTitleAndResetsBoard() {
+    @Test(arguments: [
+        (GameMode.twoPlayers, String(localized: .twoPlayersTitle)),
+        (GameMode.computer, String(localized: .computerTitle))
+    ])
+    func viewDidLoadSetsModeTitleAndResetsBoard(mode: GameMode, title: String) {
         let view = GameViewSpy()
-        let presenter = GamePresenter(haptics: HapticsServiceSpy())
+        let presenter = GamePresenter(mode: mode, haptics: HapticsServiceSpy())
         presenter.view = view
 
         presenter.viewDidLoad()
 
-        #expect(Array(view.events.prefix(2)) == [.setTitle(String(localized: .twoPlayersTitle)), .resetBoard])
+        #expect(Array(view.events.prefix(2)) == [.setTitle(title), .resetBoard])
     }
 
     @Test func tapsShowFiguresOfAlternatingSides() throws {
@@ -257,7 +261,7 @@ extension GamePresenterTests {
 
     private func makePresenter(haptics: HapticsServiceSpy = HapticsServiceSpy()) -> (GamePresenter, GameViewSpy) {
         let view = GameViewSpy()
-        let presenter = GamePresenter(haptics: haptics)
+        let presenter = GamePresenter(mode: .twoPlayers, haptics: haptics)
         presenter.view = view
         presenter.viewDidLoad()
         return (presenter, view)
