@@ -47,13 +47,6 @@ nonisolated enum Typography: CaseIterable, Sendable {
         }
     }
 
-    var isUppercased: Bool {
-        switch self {
-        case .sectionLabel: true
-        case .largeTitle, .title, .score, .accent, .body, .caption, .captionBold, .small: false
-        }
-    }
-
     private var textStyle: UIFont.TextStyle {
         switch self {
         case .largeTitle, .score: .largeTitle
