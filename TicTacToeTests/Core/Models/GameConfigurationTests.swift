@@ -57,4 +57,12 @@ struct GameConfigurationTests {
 
         #expect(configuration.figures == [.first: .star, .second: .cross])
     }
+
+    @Test func difficultyDefaultsToMedium() {
+        #expect(GameConfiguration(mode: .computer).difficulty == .medium)
+    }
+
+    @Test func difficultyIsKept() {
+        #expect(GameConfiguration(mode: .computer, difficulty: .hard).difficulty == .hard)
+    }
 }

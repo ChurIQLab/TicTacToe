@@ -57,19 +57,100 @@ struct GameSetupPresenterTests {
         ], hint: String(localized: .twoPlayersSetupHint)))
     }
 
-    @Test func computerSetupShowsOnlyPlayerFigures() {
+    @Test func computerSetupShowsDifficultyAndPlayerFigures() {
         let view = GameSetupViewSpy()
-        let settings = SettingsServiceFake(computerModeFigure: .circle)
+        let settings = SettingsServiceFake(computerModeFigure: .circle, computerDifficulty: .hard)
         let presenter = GameSetupPresenter(mode: .computer, router: RouterSpy(), settings: settings)
         presenter.view = view
 
         presenter.viewDidLoad()
 
-        #expect(view.events.last == .showFigurePicker(
-            FigurePickerViewModel(side: .first, selected: .circle, taken: nil),
-            label: String(localized: .yourFigureLabel),
-            hint: String(localized: .computerFigureHint)
-        ))
+        #expect(view.events.last == .showComputerSetup(ComputerSetupViewModel(
+            difficultyLabel: String(localized: .difficultyLabel),
+            difficulty: DifficultyPickerViewModel(
+                titles: [
+                    String(localized: .easyDifficulty),
+                    String(localized: .mediumDifficulty),
+                    String(localized: .hardDifficulty)
+                ],
+                selectedIndex: 2,
+                hint: String(localized: .hardDifficultyHint)
+            ),
+            figureLabel: String(localized: .yourFigureLabel),
+            figurePicker: FigurePickerViewModel(side: .first, selected: .circle, taken: nil),
+            figureHint: String(localized: .computerFigureHint)
+        )))
+    }
+
+    @Test(arguments: [
+        (0, String(localized: .easyDifficultyHint)),
+        (2, String(localized: .hardDifficultyHint))
+    ])
+    func selectedDifficultyUpdatesPicker(index: Int, hint: String) {
+        let view = GameSetupViewSpy()
+        let presenter = GameSetupPresenter(mode: .computer, router: RouterSpy(), settings: SettingsServiceFake())
+        presenter.view = view
+
+        presenter.didSelectDifficulty(at: index)
+
+        guard case .updateDifficultyPicker(let picker) = view.events.last else {
+            Issue.record("Difficulty picker is not updated")
+            return
+        }
+        #expect(picker.selectedIndex == index)
+        #expect(picker.hint == hint)
+    }
+
+    @Test(arguments: [1, -1, 3])
+    func currentOrUnknownDifficultyIsIgnored(index: Int) {
+        let view = GameSetupViewSpy()
+        let presenter = GameSetupPresenter(mode: .computer, router: RouterSpy(), settings: SettingsServiceFake())
+        presenter.view = view
+
+        presenter.didSelectDifficulty(at: index)
+
+        #expect(view.events.isEmpty)
+    }
+
+    @Test func twoPlayersSetupIgnoresDifficulty() {
+        let view = GameSetupViewSpy()
+        let presenter = GameSetupPresenter(mode: .twoPlayers, router: RouterSpy(), settings: SettingsServiceFake())
+        presenter.view = view
+
+        presenter.didSelectDifficulty(at: 2)
+
+        #expect(view.events.isEmpty)
+    }
+
+    @Test func tapOnPlayPassesAndSavesDifficulty() {
+        let router = RouterSpy()
+        let settings = SettingsServiceFake()
+        let presenter = GameSetupPresenter(mode: .computer, router: router, settings: settings)
+
+        presenter.didSelectDifficulty(at: 0)
+        presenter.didTapPlay()
+
+        #expect(router.events == [.showGame(GameConfiguration(mode: .computer, difficulty: .easy))])
+        #expect(settings.computerDifficulty == .easy)
+    }
+
+    @Test func savedDifficultyGoesToGame() {
+        let router = RouterSpy()
+        let settings = SettingsServiceFake(computerDifficulty: .hard)
+        let presenter = GameSetupPresenter(mode: .computer, router: router, settings: settings)
+
+        presenter.didTapPlay()
+
+        #expect(router.events == [.showGame(GameConfiguration(mode: .computer, difficulty: .hard))])
+    }
+
+    @Test func leavingWithoutPlayKeepsSavedDifficulty() {
+        let settings = SettingsServiceFake(computerDifficulty: .hard)
+        let presenter = GameSetupPresenter(mode: .computer, router: RouterSpy(), settings: settings)
+
+        presenter.didSelectDifficulty(at: 0)
+
+        #expect(settings.computerDifficulty == .hard)
     }
 
     @Test func tapOnPlayPassesEnteredNames() {
@@ -286,12 +367,16 @@ private final class GameSetupViewSpy: GameSetupViewProtocol {
         events.append(.showPlayers(players, hint: hint))
     }
 
-    func showFigurePicker(_ picker: FigurePickerViewModel, label: String, hint: String) {
-        events.append(.showFigurePicker(picker, label: label, hint: hint))
+    func showComputerSetup(_ setup: ComputerSetupViewModel) {
+        events.append(.showComputerSetup(setup))
     }
 
     func updateFigurePickers(_ pickers: [FigurePickerViewModel]) {
         events.append(.updateFigurePickers(pickers))
+    }
+
+    func updateDifficultyPicker(_ picker: DifficultyPickerViewModel) {
+        events.append(.updateDifficultyPicker(picker))
     }
 }
 
@@ -301,7 +386,8 @@ extension GameSetupViewSpy {
     nonisolated enum Event: Equatable {
         case setTitle(String)
         case showPlayers([PlayerSetupViewModel], hint: String)
-        case showFigurePicker(FigurePickerViewModel, label: String, hint: String)
+        case showComputerSetup(ComputerSetupViewModel)
         case updateFigurePickers([FigurePickerViewModel])
+        case updateDifficultyPicker(DifficultyPickerViewModel)
     }
 }

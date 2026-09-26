@@ -35,6 +35,20 @@ final class SettingsServiceTests {
 
         #expect(settings.twoPlayersFigures == [.first: .cross, .second: .circle])
         #expect(settings.computerModeFigure == .cross)
+        #expect(settings.computerDifficulty == .medium)
+    }
+
+    @Test func computerDifficultyIsKeptBetweenLaunches() {
+        SettingsService(defaults: defaults).computerDifficulty = .hard
+
+        #expect(SettingsService(defaults: defaults).computerDifficulty == .hard)
+        #expect(defaults.string(forKey: "computer.difficulty") == "hard")
+    }
+
+    @Test func unknownStoredDifficultyFallsBackToMedium() {
+        defaults.set("impossible", forKey: "computer.difficulty")
+
+        #expect(SettingsService(defaults: defaults).computerDifficulty == .medium)
     }
 
     @Test func twoPlayersFiguresAreKeptBetweenLaunches() {

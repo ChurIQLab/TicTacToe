@@ -14,6 +14,7 @@ protocol SettingsServiceProtocol: AnyObject {
     var computerModeFigure: Figure { get set }
     /// Names entered in the two-player mode; a side without a name has no value
     var twoPlayersNames: [Side: String] { get set }
+    var computerDifficulty: Difficulty { get set }
 }
 
 /// Keeps the choices of the setup screens between launches
@@ -73,6 +74,14 @@ extension SettingsService: SettingsServiceProtocol {
         set { defaults.set(newValue.rawValue, forKey: Constants.computerModeFigureKey) }
     }
 
+    /// Medium when nothing is stored or the stored level is gone
+    var computerDifficulty: Difficulty {
+        get {
+            defaults.string(forKey: Constants.computerDifficultyKey).flatMap(Difficulty.init(rawValue:)) ?? .medium
+        }
+        set { defaults.set(newValue.rawValue, forKey: Constants.computerDifficultyKey) }
+    }
+
     var twoPlayersNames: [Side: String] {
         get {
             Side.allCases.reduce(into: [Side: String]()) { names, side in
@@ -95,6 +104,7 @@ extension SettingsService {
         static let twoPlayersFirstFigureKey = "twoPlayers.firstFigure"
         static let twoPlayersSecondFigureKey = "twoPlayers.secondFigure"
         static let computerModeFigureKey = "computer.playerFigure"
+        static let computerDifficultyKey = "computer.difficulty"
         static let twoPlayersFirstNameKey = "twoPlayers.firstName"
         static let twoPlayersSecondNameKey = "twoPlayers.secondName"
     }

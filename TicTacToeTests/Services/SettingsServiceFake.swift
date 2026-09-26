@@ -15,16 +15,19 @@ final class SettingsServiceFake: SettingsServiceProtocol {
     var twoPlayersFigures: [Side: Figure]
     var computerModeFigure: Figure
     var twoPlayersNames: [Side: String]
+    var computerDifficulty: Difficulty
 
     // MARK: - Initial
 
     init(
         twoPlayersFigures: [Side: Figure] = [.first: .cross, .second: .circle],
         computerModeFigure: Figure = .cross,
-        twoPlayersNames: [Side: String] = [:]
+        twoPlayersNames: [Side: String] = [:],
+        computerDifficulty: Difficulty = .medium
     ) {
         self.twoPlayersFigures = twoPlayersFigures
         self.computerModeFigure = computerModeFigure
         self.twoPlayersNames = twoPlayersNames
+        self.computerDifficulty = computerDifficulty
     }
 }

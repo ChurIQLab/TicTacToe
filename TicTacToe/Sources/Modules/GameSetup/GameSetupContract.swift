@@ -9,15 +9,17 @@ protocol GameSetupViewProtocol: AnyObject {
     func setTitle(_ title: String)
     /// Two players: a name field and a row of figures for each
     func showPlayers(_ players: [PlayerSetupViewModel], hint: String)
-    /// Against the computer: the player's figures under a section label
-    func showFigurePicker(_ picker: FigurePickerViewModel, label: String, hint: String)
+    func showComputerSetup(_ setup: ComputerSetupViewModel)
     func updateFigurePickers(_ pickers: [FigurePickerViewModel])
+    func updateDifficultyPicker(_ picker: DifficultyPickerViewModel)
 }
 
 protocol GameSetupPresenterProtocol: AnyObject {
     func viewDidLoad()
     func didChangeName(_ name: String, for side: Side)
     func didSelectFigure(_ figure: Figure, for side: Side)
+    /// `index` in `Difficulty.allCases`, as the segments show them
+    func didSelectDifficulty(at index: Int)
     func didTapPlay()
 }
 

@@ -25,3 +25,19 @@ nonisolated struct PlayerSetupViewModel: Equatable, Sendable {
     let nameField: NameFieldViewModel
     let figurePicker: FigurePickerViewModel
 }
+
+nonisolated struct DifficultyPickerViewModel: Equatable, Sendable {
+    let titles: [String]
+    let selectedIndex: Int
+    /// Explains the selected level
+    let hint: String
+}
+
+/// Against the computer: the difficulty, then the player's figures
+nonisolated struct ComputerSetupViewModel: Equatable, Sendable {
+    let difficultyLabel: String
+    let difficulty: DifficultyPickerViewModel
+    let figureLabel: String
+    let figurePicker: FigurePickerViewModel
+    let figureHint: String
+}
