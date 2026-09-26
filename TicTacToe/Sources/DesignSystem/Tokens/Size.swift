@@ -19,6 +19,9 @@ enum Size {
     static let segmentedControlHeightInCard: CGFloat = 40
     static let figureInCard: CGFloat = 24
     static let figureInStatus: CGFloat = 18
+    /// In a tile of the 4-column grid and of the row of 8
+    static let figureInTile: CGFloat = 36
+    static let figureInSmallTile: CGFloat = 22
     static let menuIcon: CGFloat = 112
 
     // MARK: - Methods
