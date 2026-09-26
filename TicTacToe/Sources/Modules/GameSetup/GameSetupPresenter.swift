@@ -35,6 +35,9 @@ final class GameSetupPresenter {
         self.mode = mode
         self.router = router
         self.settings = settings
+        if mode == .twoPlayers {
+            names = settings.twoPlayersNames
+        }
         figures = switch mode {
         case .computer: [.first: settings.computerModeFigure]
         case .twoPlayers: settings.twoPlayersFigures
@@ -48,6 +51,7 @@ final class GameSetupPresenter {
             side: side,
             label: side.defaultPlayerName,
             placeholder: side.defaultPlayerName,
+            text: names[side] ?? "",
             maxLength: GameConfiguration.maxNameLength
         )
     }
@@ -60,14 +64,15 @@ final class GameSetupPresenter {
         )
     }
 
-    private func saveFigures() {
+    private func save(_ configuration: GameConfiguration) {
         switch mode {
         case .computer:
-            if let figure = figures[.first] {
+            if let figure = configuration.figures[.first] {
                 settings.computerModeFigure = figure
             }
         case .twoPlayers:
-            settings.twoPlayersFigures = figures
+            settings.twoPlayersFigures = configuration.figures
+            settings.twoPlayersNames = configuration.names
         }
     }
 }
@@ -103,7 +108,8 @@ extension GameSetupPresenter: GameSetupPresenterProtocol {
     }
 
     func didTapPlay() {
-        saveFigures()
-        router.showGame(configuration: GameConfiguration(mode: mode, names: names, figures: figures))
+        let configuration = GameConfiguration(mode: mode, names: names, figures: figures)
+        save(configuration)
+        router.showGame(configuration: configuration)
     }
 }

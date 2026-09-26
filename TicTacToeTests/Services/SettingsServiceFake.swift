@@ -14,14 +14,17 @@ final class SettingsServiceFake: SettingsServiceProtocol {
 
     var twoPlayersFigures: [Side: Figure]
     var computerModeFigure: Figure
+    var twoPlayersNames: [Side: String]
 
     // MARK: - Initial
 
     init(
         twoPlayersFigures: [Side: Figure] = [.first: .cross, .second: .circle],
-        computerModeFigure: Figure = .cross
+        computerModeFigure: Figure = .cross,
+        twoPlayersNames: [Side: String] = [:]
     ) {
         self.twoPlayersFigures = twoPlayersFigures
         self.computerModeFigure = computerModeFigure
+        self.twoPlayersNames = twoPlayersNames
     }
 }

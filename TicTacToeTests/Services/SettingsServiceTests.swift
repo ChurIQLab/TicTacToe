@@ -72,4 +72,19 @@ final class SettingsServiceTests {
         #expect(settings.twoPlayersFigures == [.first: .cross, .second: .circle])
         #expect(settings.computerModeFigure == .cross)
     }
+
+    @Test func namesAreKeptBetweenLaunches() {
+        SettingsService(defaults: defaults).twoPlayersNames = [.first: "Аня", .second: "Макс"]
+
+        #expect(SettingsService(defaults: defaults).twoPlayersNames == [.first: "Аня", .second: "Макс"])
+    }
+
+    @Test func nameWithoutValueIsRemoved() {
+        let settings = SettingsService(defaults: defaults)
+        settings.twoPlayersNames = [.first: "Аня", .second: "Макс"]
+
+        settings.twoPlayersNames = [.second: "Макс"]
+
+        #expect(settings.twoPlayersNames == [.second: "Макс"])
+    }
 }
