@@ -109,6 +109,24 @@
         }
       }
     },
+    "diamondFigure" : {
+      "comment" : "VoiceOver name of the diamond figure",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diamond"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ромб"
+          }
+        }
+      }
+    },
     "drawMessage" : {
       "comment" : "Status under the board and title of the game result sheet when the board is full and nobody won",
       "extractionState" : "manual",
@@ -141,6 +159,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Игрок 1"
+          }
+        }
+      }
+    },
+    "heartFigure" : {
+      "comment" : "VoiceOver name of the heart figure",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heart"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сердце"
+          }
+        }
+      }
+    },
+    "hexagonFigure" : {
+      "comment" : "VoiceOver name of the hexagon figure",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexagon"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шестиугольник"
           }
         }
       }
@@ -285,6 +339,60 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Настройки"
+          }
+        }
+      }
+    },
+    "squareFigure" : {
+      "comment" : "VoiceOver name of the square figure",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Square"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Квадрат"
+          }
+        }
+      }
+    },
+    "starFigure" : {
+      "comment" : "VoiceOver name of the star figure",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Star"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звезда"
+          }
+        }
+      }
+    },
+    "triangleFigure" : {
+      "comment" : "VoiceOver name of the triangle figure",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triangle"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Треугольник"
           }
         }
       }
