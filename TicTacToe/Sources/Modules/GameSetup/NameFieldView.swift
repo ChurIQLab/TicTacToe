@@ -24,7 +24,7 @@ final class NameFieldView: UIView {
 
     // MARK: - Outlets
 
-    private let label = UILabel()
+    private let label = SectionLabel()
     private let cardView = CardView(cornerRadius: CornerRadius.textField)
     private let textField = InsetTextField()
 
@@ -44,15 +44,7 @@ final class NameFieldView: UIView {
     func configure(with viewModel: NameFieldViewModel) {
         maxLength = viewModel.maxLength
 
-        let labelFont = Typography.sectionLabel.font()
-        label.attributedText = NSAttributedString(
-            string: viewModel.label.localizedUppercase,
-            attributes: [
-                .font: labelFont,
-                .kern: Typography.sectionLabel.tracking * labelFont.pointSize,
-                .foregroundColor: UIColor.secondaryText
-            ]
-        )
+        label.text = viewModel.label
 
         textField.attributedPlaceholder = NSAttributedString(
             string: viewModel.placeholder,

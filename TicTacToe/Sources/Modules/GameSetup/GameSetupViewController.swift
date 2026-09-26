@@ -29,6 +29,9 @@ final class GameSetupViewController: UIViewController {
         setupView.onNameChange = { [weak self] name, side in
             self?.presenter.didChangeName(name, for: side)
         }
+        setupView.onFigureSelect = { [weak self] figure, side in
+            self?.presenter.didSelectFigure(figure, for: side)
+        }
         presenter.viewDidLoad()
     }
 
@@ -51,7 +54,15 @@ extension GameSetupViewController: GameSetupViewProtocol {
         navigationItem.title = title
     }
 
-    func showNameFields(_ fields: [NameFieldViewModel], hint: String) {
-        setupView.showNameFields(fields, hint: hint)
+    func showPlayers(_ players: [PlayerSetupViewModel], hint: String) {
+        setupView.showPlayers(players, hint: hint)
+    }
+
+    func showFigurePicker(_ picker: FigurePickerViewModel, label: String, hint: String) {
+        setupView.showFigurePicker(picker, label: label, hint: hint)
+    }
+
+    func updateFigurePickers(_ pickers: [FigurePickerViewModel]) {
+        setupView.updateFigurePickers(pickers)
     }
 }
