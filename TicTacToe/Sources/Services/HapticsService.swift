@@ -19,6 +19,20 @@ final class HapticsService {
 
     private let moveGenerator = UIImpactFeedbackGenerator(style: .light)
     private let resultGenerator = UINotificationFeedbackGenerator()
+
+    // MARK: - Initial
+
+    /// A prepared generator plays without a delay, so both are prepared again after every use
+    init() {
+        prepareGenerators()
+    }
+
+    // MARK: - Private methods
+
+    private func prepareGenerators() {
+        moveGenerator.prepare()
+        resultGenerator.prepare()
+    }
 }
 
 // MARK: - HapticsServiceProtocol
@@ -26,13 +40,16 @@ final class HapticsService {
 extension HapticsService: HapticsServiceProtocol {
     func playMove() {
         moveGenerator.impactOccurred()
+        prepareGenerators()
     }
 
     func playWin() {
         resultGenerator.notificationOccurred(.success)
+        prepareGenerators()
     }
 
     func playDraw() {
         resultGenerator.notificationOccurred(.warning)
+        prepareGenerators()
     }
 }
