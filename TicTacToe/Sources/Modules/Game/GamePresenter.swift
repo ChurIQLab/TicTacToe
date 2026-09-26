@@ -90,10 +90,7 @@ final class GamePresenter {
     }
 
     private func figure(for side: Side) -> Figure {
-        switch side {
-        case .first: .cross
-        case .second: .circle
-        }
+        configuration.figures[side] ?? Figure.defaultFigure(for: side)
     }
 
     private func name(for side: Side) -> String {

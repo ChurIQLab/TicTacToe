@@ -19,14 +19,17 @@ nonisolated struct GameConfiguration: Equatable, Sendable {
     /// Entered names without surrounding whitespace and cut to `maxNameLength`;
     /// a side without a name gets the default one
     let names: [Side: String]
+    /// Always has a figure for both sides, and they are different
+    let figures: [Side: Figure]
 
     // MARK: - Initial
 
-    init(mode: GameMode, names: [Side: String] = [:]) {
+    init(mode: GameMode, names: [Side: String] = [:], figures: [Side: Figure] = [:]) {
         self.mode = mode
         self.names = names
             .mapValues(Self.normalizedName)
             .filter { !$0.value.isEmpty }
+        self.figures = Figure.distinctFigures(figures)
     }
 
     // MARK: - Private methods

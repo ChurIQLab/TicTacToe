@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Names for two players; difficulty and figures come with the tasks of the computer mode and the figures
+/// Names and figures of the players; difficulty comes with the computer mode
 final class GameSetupPresenter {
 
     // MARK: - Properties
@@ -17,12 +17,18 @@ final class GameSetupPresenter {
     private let router: GameSetupRouting
     /// Raw field text: `GameConfiguration` trims it and drops empty names
     private var names: [Side: String] = [:]
+    /// Against the computer only the player's figure, the first side; the computer gets another one
+    private var figures: [Side: Figure]
 
     // MARK: - Initial
 
-    init(mode: GameMode, router: GameSetupRouting) {
+    init(mode: GameMode, router: GameSetupRouting, settings: SettingsServiceProtocol) {
         self.mode = mode
         self.router = router
+        figures = switch mode {
+        case .computer: [.first: settings.computerModeFigure]
+        case .twoPlayers: settings.twoPlayersFigures
+        }
     }
 
     // MARK: - Private methods
@@ -51,6 +57,6 @@ extension GameSetupPresenter: GameSetupPresenterProtocol {
     }
 
     func didTapPlay() {
-        router.showGame(configuration: GameConfiguration(mode: mode, names: names))
+        router.showGame(configuration: GameConfiguration(mode: mode, names: names, figures: figures))
     }
 }
