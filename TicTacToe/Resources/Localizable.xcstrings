@@ -55,6 +55,24 @@
         }
       }
     },
+    "computerFigureHint" : {
+      "comment" : "Hint under the figures on the computer setup screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The computer will play another figure"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Компьютер сыграет другой фигурой"
+          }
+        }
+      }
+    },
     "computerSubtitle" : {
       "comment" : "Description of the game against the computer in the main menu",
       "extractionState" : "manual",
@@ -213,24 +231,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "В меню"
-          }
-        }
-      }
-    },
-    "namesHint" : {
-      "comment" : "Hint under the name fields on the two-player setup screen",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Names are optional."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Имена можно не вводить."
           }
         }
       }
@@ -415,6 +415,24 @@
         }
       }
     },
+    "twoPlayersSetupHint" : {
+      "comment" : "Hint under the players on the two-player setup screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Names are optional. Players can't pick the same figure."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Имена можно не вводить. Одинаковую фигуру выбрать нельзя."
+          }
+        }
+      }
+    },
     "twoPlayersSubtitle" : {
       "comment" : "Description of the two-player game in the main menu",
       "extractionState" : "manual",
@@ -483,6 +501,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Победа: %@"
+          }
+        }
+      }
+    },
+    "yourFigureLabel" : {
+      "comment" : "Section label above the player's figures on the computer setup screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your figure"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваша фигура"
           }
         }
       }

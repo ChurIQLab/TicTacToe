@@ -11,3 +11,15 @@ nonisolated struct NameFieldViewModel: Equatable, Sendable {
     let placeholder: String
     let maxLength: Int
 }
+
+nonisolated struct FigurePickerViewModel: Equatable, Sendable {
+    let side: Side
+    let selected: Figure
+    /// The opponent's figure, it cannot be picked
+    let taken: Figure?
+}
+
+nonisolated struct PlayerSetupViewModel: Equatable, Sendable {
+    let nameField: NameFieldViewModel
+    let figurePicker: FigurePickerViewModel
+}

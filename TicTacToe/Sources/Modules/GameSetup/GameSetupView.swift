@@ -13,8 +13,10 @@ final class GameSetupView: UIView {
 
     var onPlayTap: (() -> Void)?
     var onNameChange: ((String, Side) -> Void)?
+    var onFigureSelect: ((Figure, Side) -> Void)?
 
     private var heightClass: HeightClass?
+    private var figurePickers: [Side: FigurePickerView] = [:]
 
     // MARK: - Outlets
 
@@ -42,16 +44,17 @@ final class GameSetupView: UIView {
 
     // MARK: - Methods
 
-    func showNameFields(_ fields: [NameFieldViewModel], hint: String) {
-        contentStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    func showPlayers(_ players: [PlayerSetupViewModel], hint: String) {
+        clearContent()
 
-        let fieldViews = fields.map { field in
+        let fieldViews = players.map { player in
             let fieldView = NameFieldView()
-            fieldView.configure(with: field)
+            fieldView.configure(with: player.nameField)
             fieldView.onTextChange = { [weak self] name in
-                self?.onNameChange?(name, field.side)
+                self?.onNameChange?(name, player.nameField.side)
             }
-            contentStackView.addArrangedSubview(fieldView)
+            let pickerView = makeFigurePicker(with: player.figurePicker, style: .small)
+            contentStackView.addArrangedSubview(makeSection(of: [fieldView, pickerView]))
             return fieldView
         }
 
@@ -68,6 +71,21 @@ final class GameSetupView: UIView {
         }
 
         contentStackView.addArrangedSubview(makeHintLabel(text: hint))
+    }
+
+    func showFigurePicker(_ picker: FigurePickerViewModel, label: String, hint: String) {
+        clearContent()
+
+        let sectionLabel = SectionLabel()
+        sectionLabel.text = label
+        let pickerView = makeFigurePicker(with: picker, style: .large)
+        contentStackView.addArrangedSubview(makeSection(of: [sectionLabel, pickerView, makeHintLabel(text: hint)]))
+    }
+
+    func updateFigurePickers(_ pickers: [FigurePickerViewModel]) {
+        for picker in pickers {
+            figurePickers[picker.side]?.configure(with: picker)
+        }
     }
 
     // MARK: - Setups
@@ -137,6 +155,29 @@ final class GameSetupView: UIView {
 
     // MARK: - Private methods
 
+    private func clearContent() {
+        contentStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        figurePickers = [:]
+    }
+
+    private func makeFigurePicker(with viewModel: FigurePickerViewModel, style: FigureTileView.Style) -> UIView {
+        let pickerView = FigurePickerView(side: viewModel.side, style: style)
+        pickerView.configure(with: viewModel)
+        pickerView.onSelect = { [weak self] figure in
+            self?.onFigureSelect?(figure, viewModel.side)
+        }
+        figurePickers[viewModel.side] = pickerView
+        return pickerView
+    }
+
+    /// Views of one block, closer to each other than the blocks
+    private func makeSection(of views: [UIView]) -> UIView {
+        let stackView = UIStackView(arrangedSubviews: views)
+        stackView.axis = .vertical
+        stackView.spacing = Constants.sectionSpacing
+        return stackView
+    }
+
     private func makeHintLabel(text: String) -> UILabel {
         let label = UILabel()
         label.text = text
@@ -166,5 +207,6 @@ extension GameSetupView {
         static let contentTopInset: CGFloat = 24
         /// Between the button and the content above it or the keyboard below it
         static let buttonSpacing: CGFloat = 12
+        static let sectionSpacing: CGFloat = 10
     }
 }
