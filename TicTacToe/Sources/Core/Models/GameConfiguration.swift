@@ -21,15 +21,23 @@ nonisolated struct GameConfiguration: Equatable, Sendable {
     let names: [Side: String]
     /// Always has a figure for both sides, and they are different
     let figures: [Side: Figure]
+    /// Only the computer mode uses it
+    let difficulty: Difficulty
 
     // MARK: - Initial
 
-    init(mode: GameMode, names: [Side: String] = [:], figures: [Side: Figure] = [:]) {
+    init(
+        mode: GameMode,
+        names: [Side: String] = [:],
+        figures: [Side: Figure] = [:],
+        difficulty: Difficulty = .medium
+    ) {
         self.mode = mode
         self.names = names
             .mapValues(Self.normalizedName)
             .filter { !$0.value.isEmpty }
         self.figures = Figure.distinctFigures(figures)
+        self.difficulty = difficulty
     }
 
     // MARK: - Private methods

@@ -14,9 +14,12 @@ final class GameSetupView: UIView {
     var onPlayTap: (() -> Void)?
     var onNameChange: ((String, Side) -> Void)?
     var onFigureSelect: ((Figure, Side) -> Void)?
+    var onDifficultySelect: ((Int) -> Void)?
 
     private var heightClass: HeightClass?
     private var figurePickers: [Side: FigurePickerView] = [:]
+    private var difficultyControl: SegmentedControl?
+    private var difficultyHintLabel: UILabel?
 
     // MARK: - Outlets
 
@@ -73,19 +76,43 @@ final class GameSetupView: UIView {
         contentStackView.addArrangedSubview(makeHintLabel(text: hint))
     }
 
-    func showFigurePicker(_ picker: FigurePickerViewModel, label: String, hint: String) {
+    func showComputerSetup(_ setup: ComputerSetupViewModel) {
         clearContent()
 
-        let sectionLabel = SectionLabel()
-        sectionLabel.text = label
-        let pickerView = makeFigurePicker(with: picker, style: .large)
-        contentStackView.addArrangedSubview(makeSection(of: [sectionLabel, pickerView, makeHintLabel(text: hint)]))
+        let difficultyControl = SegmentedControl(
+            titles: setup.difficulty.titles,
+            selectedIndex: setup.difficulty.selectedIndex
+        )
+        difficultyControl.addAction(UIAction { [weak self, weak difficultyControl] _ in
+            guard let index = difficultyControl?.selectedIndex else { return }
+            self?.onDifficultySelect?(index)
+        }, for: .valueChanged)
+        let difficultyHintLabel = makeHintLabel(text: setup.difficulty.hint)
+        self.difficultyControl = difficultyControl
+        self.difficultyHintLabel = difficultyHintLabel
+        contentStackView.addArrangedSubview(makeSection(of: [
+            makeSectionLabel(text: setup.difficultyLabel),
+            difficultyControl,
+            difficultyHintLabel
+        ]))
+
+        let pickerView = makeFigurePicker(with: setup.figurePicker, style: .large)
+        contentStackView.addArrangedSubview(makeSection(of: [
+            makeSectionLabel(text: setup.figureLabel),
+            pickerView,
+            makeHintLabel(text: setup.figureHint)
+        ]))
     }
 
     func updateFigurePickers(_ pickers: [FigurePickerViewModel]) {
         for picker in pickers {
             figurePickers[picker.side]?.configure(with: picker)
         }
+    }
+
+    func updateDifficultyPicker(_ picker: DifficultyPickerViewModel) {
+        difficultyControl?.setSelectedIndex(picker.selectedIndex, animated: true)
+        difficultyHintLabel?.text = picker.hint
     }
 
     // MARK: - Setups
@@ -158,6 +185,8 @@ final class GameSetupView: UIView {
     private func clearContent() {
         contentStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         figurePickers = [:]
+        difficultyControl = nil
+        difficultyHintLabel = nil
     }
 
     private func makeFigurePicker(with viewModel: FigurePickerViewModel, style: FigureTileView.Style) -> UIView {
@@ -176,6 +205,12 @@ final class GameSetupView: UIView {
         stackView.axis = .vertical
         stackView.spacing = Constants.sectionSpacing
         return stackView
+    }
+
+    private func makeSectionLabel(text: String) -> SectionLabel {
+        let label = SectionLabel()
+        label.text = text
+        return label
     }
 
     private func makeHintLabel(text: String) -> UILabel {

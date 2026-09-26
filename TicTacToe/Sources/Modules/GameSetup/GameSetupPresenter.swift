@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Names and figures of the players; difficulty comes with the computer mode
+/// Names and figures of the players, the difficulty against the computer
 final class GameSetupPresenter {
 
     // MARK: - Properties
@@ -20,6 +20,7 @@ final class GameSetupPresenter {
     private var names: [Side: String] = [:]
     /// Against the computer only the player's figure, the first side; the computer gets another one
     private var figures: [Side: Figure]
+    private var difficulty: Difficulty
 
     /// Sides whose figures the player picks on the screen
     private var pickingSides: [Side] {
@@ -42,6 +43,7 @@ final class GameSetupPresenter {
         case .computer: [.first: settings.computerModeFigure]
         case .twoPlayers: settings.twoPlayersFigures
         }
+        difficulty = settings.computerDifficulty
     }
 
     // MARK: - Private methods
@@ -64,12 +66,21 @@ final class GameSetupPresenter {
         )
     }
 
+    private var difficultyPicker: DifficultyPickerViewModel {
+        DifficultyPickerViewModel(
+            titles: Difficulty.allCases.map(\.title),
+            selectedIndex: Difficulty.allCases.firstIndex(of: difficulty) ?? 0,
+            hint: difficulty.hint
+        )
+    }
+
     private func save(_ configuration: GameConfiguration) {
         switch mode {
         case .computer:
             if let figure = configuration.figures[.first] {
                 settings.computerModeFigure = figure
             }
+            settings.computerDifficulty = configuration.difficulty
         case .twoPlayers:
             settings.twoPlayersFigures = configuration.figures
             settings.twoPlayersNames = configuration.names
@@ -84,11 +95,13 @@ extension GameSetupPresenter: GameSetupPresenterProtocol {
         view?.setTitle(mode.title)
         switch mode {
         case .computer:
-            view?.showFigurePicker(
-                figurePicker(for: .first),
-                label: String(localized: .yourFigureLabel),
-                hint: String(localized: .computerFigureHint)
-            )
+            view?.showComputerSetup(ComputerSetupViewModel(
+                difficultyLabel: String(localized: .difficultyLabel),
+                difficulty: difficultyPicker,
+                figureLabel: String(localized: .yourFigureLabel),
+                figurePicker: figurePicker(for: .first),
+                figureHint: String(localized: .computerFigureHint)
+            ))
         case .twoPlayers:
             let players = Side.allCases.map { side in
                 PlayerSetupViewModel(nameField: nameField(for: side), figurePicker: figurePicker(for: side))
@@ -107,8 +120,16 @@ extension GameSetupPresenter: GameSetupPresenterProtocol {
         view?.updateFigurePickers(pickingSides.map(figurePicker))
     }
 
+    func didSelectDifficulty(at index: Int) {
+        guard mode == .computer, Difficulty.allCases.indices.contains(index) else { return }
+        let selected = Difficulty.allCases[index]
+        guard selected != difficulty else { return }
+        difficulty = selected
+        view?.updateDifficultyPicker(difficultyPicker)
+    }
+
     func didTapPlay() {
-        let configuration = GameConfiguration(mode: mode, names: names, figures: figures)
+        let configuration = GameConfiguration(mode: mode, names: names, figures: figures, difficulty: difficulty)
         save(configuration)
         router.showGame(configuration: configuration)
     }

@@ -32,6 +32,9 @@ final class GameSetupViewController: UIViewController {
         setupView.onFigureSelect = { [weak self] figure, side in
             self?.presenter.didSelectFigure(figure, for: side)
         }
+        setupView.onDifficultySelect = { [weak self] index in
+            self?.presenter.didSelectDifficulty(at: index)
+        }
         presenter.viewDidLoad()
     }
 
@@ -58,11 +61,15 @@ extension GameSetupViewController: GameSetupViewProtocol {
         setupView.showPlayers(players, hint: hint)
     }
 
-    func showFigurePicker(_ picker: FigurePickerViewModel, label: String, hint: String) {
-        setupView.showFigurePicker(picker, label: label, hint: hint)
+    func showComputerSetup(_ setup: ComputerSetupViewModel) {
+        setupView.showComputerSetup(setup)
     }
 
     func updateFigurePickers(_ pickers: [FigurePickerViewModel]) {
         setupView.updateFigurePickers(pickers)
+    }
+
+    func updateDifficultyPicker(_ picker: DifficultyPickerViewModel) {
+        setupView.updateDifficultyPicker(picker)
     }
 }

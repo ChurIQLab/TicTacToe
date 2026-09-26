@@ -145,6 +145,24 @@
         }
       }
     },
+    "difficultyLabel" : {
+      "comment" : "Section label above the difficulty segments on the computer setup screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Difficulty"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сложность"
+          }
+        }
+      }
+    },
     "drawMessage" : {
       "comment" : "Status under the board and title of the game result sheet when the board is full and nobody won",
       "extractionState" : "manual",
@@ -163,6 +181,42 @@
         }
       }
     },
+    "easyDifficulty" : {
+      "comment" : "Easy difficulty segment",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Easy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Лёгкий"
+          }
+        }
+      }
+    },
+    "easyDifficultyHint" : {
+      "comment" : "Explains the easy difficulty under the segments",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plays at random"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ходит наугад"
+          }
+        }
+      }
+    },
     "firstPlayerName" : {
       "comment" : "Default name of the player who moves first",
       "extractionState" : "manual",
@@ -177,6 +231,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Игрок 1"
+          }
+        }
+      }
+    },
+    "hardDifficulty" : {
+      "comment" : "Hard difficulty segment",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hard"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сложный"
+          }
+        }
+      }
+    },
+    "hardDifficultyHint" : {
+      "comment" : "Explains the hard difficulty under the segments",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Never loses: a draw is your best result"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не проигрывает — лучший итог для вас ничья"
           }
         }
       }
@@ -213,6 +303,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Шестиугольник"
+          }
+        }
+      }
+    },
+    "mediumDifficulty" : {
+      "comment" : "Medium difficulty segment",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Средний"
+          }
+        }
+      }
+    },
+    "mediumDifficultyHint" : {
+      "comment" : "Explains the medium difficulty under the segments",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wins when it can and blocks your wins"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выигрывает, если может, и не даёт выиграть вам"
           }
         }
       }
