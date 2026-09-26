@@ -17,6 +17,12 @@ final class AppRouter {
     private weak var navigationController: UINavigationController?
     private let settings: SettingsServiceProtocol
 
+    /// `nil` while the navigation controller runs a transition
+    private var idleNavigationController: UINavigationController? {
+        guard let navigationController, navigationController.transitionCoordinator == nil else { return nil }
+        return navigationController
+    }
+
     // MARK: - Initial
 
     init(navigationController: UINavigationController, settings: SettingsServiceProtocol) {
@@ -30,22 +36,28 @@ final class AppRouter {
         let menuViewController = MenuModuleBuilder.build(router: self)
         navigationController?.setViewControllers([menuViewController], animated: false)
     }
+
+    // MARK: - Private methods
+
+    /// Builds the screen only when it is shown. A transition started while another one is running
+    /// is ignored: taps on two buttons at once would otherwise stack two screens
+    private func push(_ makeViewController: () -> UIViewController) {
+        guard let navigationController = idleNavigationController else { return }
+        navigationController.pushViewController(makeViewController(), animated: true)
+    }
 }
 
 // MARK: - MenuRouting
 
 extension AppRouter: MenuRouting {
     func showGameSetup(mode: GameMode) {
-        let gameSetupViewController = GameSetupModuleBuilder.build(
-            mode: mode,
-            router: self,
-            settings: settings
-        )
-        navigationController?.pushViewController(gameSetupViewController, animated: true)
+        push {
+            GameSetupModuleBuilder.build(mode: mode, router: self, settings: settings)
+        }
     }
 
     func showSettings() {
-        navigationController?.pushViewController(SettingsModuleBuilder.build(), animated: true)
+        push(SettingsModuleBuilder.build)
     }
 }
 
@@ -53,8 +65,9 @@ extension AppRouter: MenuRouting {
 
 extension AppRouter: GameSetupRouting {
     func showGame(configuration: GameConfiguration) {
-        let gameViewController = GameModuleBuilder.build(configuration: configuration, router: self)
-        navigationController?.pushViewController(gameViewController, animated: true)
+        push {
+            GameModuleBuilder.build(configuration: configuration, router: self)
+        }
     }
 }
 
@@ -62,6 +75,6 @@ extension AppRouter: GameSetupRouting {
 
 extension AppRouter: GameRouting {
     func showMenu() {
-        navigationController?.popToRootViewController(animated: true)
+        idleNavigationController?.popToRootViewController(animated: true)
     }
 }
