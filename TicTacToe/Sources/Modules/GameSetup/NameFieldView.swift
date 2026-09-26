@@ -45,6 +45,7 @@ final class NameFieldView: UIView {
         maxLength = viewModel.maxLength
 
         label.text = viewModel.label
+        textField.text = viewModel.text
 
         textField.attributedPlaceholder = NSAttributedString(
             string: viewModel.placeholder,

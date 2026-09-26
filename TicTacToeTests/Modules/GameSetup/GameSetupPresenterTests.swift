@@ -39,6 +39,7 @@ struct GameSetupPresenterTests {
                     side: .first,
                     label: String(localized: .firstPlayerName),
                     placeholder: String(localized: .firstPlayerName),
+                    text: "",
                     maxLength: GameConfiguration.maxNameLength
                 ),
                 figurePicker: FigurePickerViewModel(side: .first, selected: .star, taken: .heart)
@@ -48,6 +49,7 @@ struct GameSetupPresenterTests {
                     side: .second,
                     label: String(localized: .secondPlayerName),
                     placeholder: String(localized: .secondPlayerName),
+                    text: "",
                     maxLength: GameConfiguration.maxNameLength
                 ),
                 figurePicker: FigurePickerViewModel(side: .second, selected: .heart, taken: .star)
@@ -223,6 +225,46 @@ struct GameSetupPresenterTests {
         presenter.didSelectFigure(.star, for: .first)
 
         #expect(settings.twoPlayersFigures == [.first: .cross, .second: .circle])
+    }
+
+    @Test func savedNamesFillFieldsAndGoToGame() {
+        let view = GameSetupViewSpy()
+        let router = RouterSpy()
+        let settings = SettingsServiceFake(twoPlayersNames: [.first: "Аня"])
+        let presenter = GameSetupPresenter(mode: .twoPlayers, router: router, settings: settings)
+        presenter.view = view
+
+        presenter.viewDidLoad()
+        presenter.didTapPlay()
+
+        guard case .showPlayers(let players, _) = view.events.last else {
+            Issue.record("Players are not shown")
+            return
+        }
+        #expect(players.map(\.nameField.text) == ["Аня", ""])
+        #expect(router.events == [.showGame(GameConfiguration(mode: .twoPlayers, names: [.first: "Аня"]))])
+    }
+
+    @Test func tapOnPlaySavesTrimmedNames() {
+        let settings = SettingsServiceFake(twoPlayersNames: [.first: "Аня", .second: "Макс"])
+        let presenter = GameSetupPresenter(mode: .twoPlayers, router: RouterSpy(), settings: settings)
+
+        presenter.didChangeName("  Вера ", for: .first)
+        presenter.didChangeName(" ", for: .second)
+        presenter.didTapPlay()
+
+        #expect(settings.twoPlayersNames == [.first: "Вера"])
+    }
+
+    @Test func computerGameDoesNotChangeSavedNames() {
+        let router = RouterSpy()
+        let settings = SettingsServiceFake(twoPlayersNames: [.first: "Аня"])
+        let presenter = GameSetupPresenter(mode: .computer, router: router, settings: settings)
+
+        presenter.didTapPlay()
+
+        #expect(settings.twoPlayersNames == [.first: "Аня"])
+        #expect(router.events == [.showGame(GameConfiguration(mode: .computer))])
     }
 }
 

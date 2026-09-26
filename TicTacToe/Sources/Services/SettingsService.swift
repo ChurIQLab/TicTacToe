@@ -12,6 +12,8 @@ protocol SettingsServiceProtocol: AnyObject {
     var twoPlayersFigures: [Side: Figure] { get set }
     /// The player's figure in the computer mode; the player is the first side
     var computerModeFigure: Figure { get set }
+    /// Names entered in the two-player mode; a side without a name has no value
+    var twoPlayersNames: [Side: String] { get set }
 }
 
 /// Keeps the choices of the setup screens between launches
@@ -40,6 +42,13 @@ final class SettingsService {
         case .second: Constants.twoPlayersSecondFigureKey
         }
     }
+
+    private func nameKey(for side: Side) -> String {
+        switch side {
+        case .first: Constants.twoPlayersFirstNameKey
+        case .second: Constants.twoPlayersSecondNameKey
+        }
+    }
 }
 
 // MARK: - SettingsServiceProtocol
@@ -63,6 +72,19 @@ extension SettingsService: SettingsServiceProtocol {
         get { figure(forKey: Constants.computerModeFigureKey) ?? Figure.defaultFigure(for: .first) }
         set { defaults.set(newValue.rawValue, forKey: Constants.computerModeFigureKey) }
     }
+
+    var twoPlayersNames: [Side: String] {
+        get {
+            Side.allCases.reduce(into: [Side: String]()) { names, side in
+                names[side] = defaults.string(forKey: nameKey(for: side))
+            }
+        }
+        set {
+            for side in Side.allCases {
+                defaults.set(newValue[side], forKey: nameKey(for: side))
+            }
+        }
+    }
 }
 
 // MARK: - Constants
@@ -73,5 +95,7 @@ extension SettingsService {
         static let twoPlayersFirstFigureKey = "twoPlayers.firstFigure"
         static let twoPlayersSecondFigureKey = "twoPlayers.secondFigure"
         static let computerModeFigureKey = "computer.playerFigure"
+        static let twoPlayersFirstNameKey = "twoPlayers.firstName"
+        static let twoPlayersSecondNameKey = "twoPlayers.secondName"
     }
 }

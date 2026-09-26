@@ -9,6 +9,8 @@ nonisolated struct NameFieldViewModel: Equatable, Sendable {
     let side: Side
     let label: String
     let placeholder: String
+    /// The name saved after the last game
+    let text: String
     let maxLength: Int
 }
 
