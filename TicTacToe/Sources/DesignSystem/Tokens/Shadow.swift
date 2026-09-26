@@ -21,6 +21,8 @@ struct Shadow {
         Shadow(offsetY: 12, blur: 28, opacity: 0.12)
     ]
 
+    static let segmentThumb = Shadow(offsetY: 1, blur: 3, opacity: 0.12)
+
     let offsetY: CGFloat
     let blur: CGFloat
     let opacity: Float

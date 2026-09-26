@@ -24,6 +24,16 @@ struct ShadowTests {
 
         #expect(layers.allSatisfy { $0.shadowOpacity == 0 })
     }
+
+    @Test func segmentThumbShadowMatchesSpecification() {
+        let layer = CALayer()
+
+        Shadow.segmentThumb.apply(to: layer, for: UITraitCollection(userInterfaceStyle: .light))
+
+        #expect(layer.shadowOffset.height == 1)
+        #expect(layer.shadowRadius == 1.5)
+        #expect(layer.shadowOpacity == 0.12)
+    }
 }
 
 extension ShadowTests {
