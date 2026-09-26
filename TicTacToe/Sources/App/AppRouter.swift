@@ -15,11 +15,13 @@ final class AppRouter {
 
     /// The window owns the navigation controller, the router only drives it
     private weak var navigationController: UINavigationController?
+    private let settings: SettingsServiceProtocol
 
     // MARK: - Initial
 
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, settings: SettingsServiceProtocol) {
         self.navigationController = navigationController
+        self.settings = settings
     }
 
     // MARK: - Methods
@@ -34,7 +36,11 @@ final class AppRouter {
 
 extension AppRouter: MenuRouting {
     func showGameSetup(mode: GameMode) {
-        let gameSetupViewController = GameSetupModuleBuilder.build(mode: mode, router: self)
+        let gameSetupViewController = GameSetupModuleBuilder.build(
+            mode: mode,
+            router: self,
+            settings: settings
+        )
         navigationController?.pushViewController(gameSetupViewController, animated: true)
     }
 

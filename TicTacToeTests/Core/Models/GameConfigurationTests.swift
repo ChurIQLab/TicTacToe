@@ -47,4 +47,14 @@ struct GameConfigurationTests {
 
         #expect(configuration.names[.first] == name)
     }
+
+    @Test func figuresDefaultToCrossAndCircle() {
+        #expect(GameConfiguration(mode: .twoPlayers).figures == [.first: .cross, .second: .circle])
+    }
+
+    @Test func sameFiguresAreMadeDistinct() {
+        let configuration = GameConfiguration(mode: .twoPlayers, figures: [.first: .star, .second: .star])
+
+        #expect(configuration.figures == [.first: .star, .second: .cross])
+    }
 }

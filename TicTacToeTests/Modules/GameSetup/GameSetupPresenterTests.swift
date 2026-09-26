@@ -17,7 +17,7 @@ struct GameSetupPresenterTests {
     ])
     func viewDidLoadSetsModeTitle(mode: GameMode, title: String) {
         let view = GameSetupViewSpy()
-        let presenter = GameSetupPresenter(mode: mode, router: RouterSpy())
+        let presenter = GameSetupPresenter(mode: mode, router: RouterSpy(), settings: SettingsServiceFake())
         presenter.view = view
 
         presenter.viewDidLoad()
@@ -27,7 +27,7 @@ struct GameSetupPresenterTests {
 
     @Test func twoPlayersSetupShowsNameFieldsWithDefaultNames() {
         let view = GameSetupViewSpy()
-        let presenter = GameSetupPresenter(mode: .twoPlayers, router: RouterSpy())
+        let presenter = GameSetupPresenter(mode: .twoPlayers, router: RouterSpy(), settings: SettingsServiceFake())
         presenter.view = view
 
         presenter.viewDidLoad()
@@ -51,7 +51,7 @@ struct GameSetupPresenterTests {
 
     @Test func computerSetupShowsNoNameFields() {
         let view = GameSetupViewSpy()
-        let presenter = GameSetupPresenter(mode: .computer, router: RouterSpy())
+        let presenter = GameSetupPresenter(mode: .computer, router: RouterSpy(), settings: SettingsServiceFake())
         presenter.view = view
 
         presenter.viewDidLoad()
@@ -61,7 +61,7 @@ struct GameSetupPresenterTests {
 
     @Test func tapOnPlayPassesEnteredNames() {
         let router = RouterSpy()
-        let presenter = GameSetupPresenter(mode: .twoPlayers, router: router)
+        let presenter = GameSetupPresenter(mode: .twoPlayers, router: router, settings: SettingsServiceFake())
 
         presenter.didChangeName("Ан", for: .first)
         presenter.didChangeName("Аня ", for: .first)
@@ -76,7 +76,7 @@ struct GameSetupPresenterTests {
 
     @Test func clearedNameFallsBackToDefault() {
         let router = RouterSpy()
-        let presenter = GameSetupPresenter(mode: .twoPlayers, router: router)
+        let presenter = GameSetupPresenter(mode: .twoPlayers, router: router, settings: SettingsServiceFake())
 
         presenter.didChangeName("Аня", for: .first)
         presenter.didChangeName("", for: .first)
@@ -88,11 +88,44 @@ struct GameSetupPresenterTests {
     @Test(arguments: GameMode.allCases)
     func tapOnPlayShowsGameOfMode(mode: GameMode) {
         let router = RouterSpy()
-        let presenter = GameSetupPresenter(mode: mode, router: router)
+        let presenter = GameSetupPresenter(mode: mode, router: router, settings: SettingsServiceFake())
 
         presenter.didTapPlay()
 
         #expect(router.events == [.showGame(GameConfiguration(mode: mode))])
+    }
+
+    @Test func twoPlayersGameGetsSavedFigures() {
+        let router = RouterSpy()
+        let settings = SettingsServiceFake(twoPlayersFigures: [.first: .star, .second: .heart])
+        let presenter = GameSetupPresenter(mode: .twoPlayers, router: router, settings: settings)
+
+        presenter.didTapPlay()
+
+        #expect(router.events == [.showGame(GameConfiguration(
+            mode: .twoPlayers,
+            figures: [.first: .star, .second: .heart]
+        ))])
+    }
+
+    @Test(arguments: [
+        (Figure.star, Figure.circle),
+        (Figure.circle, Figure.cross)
+    ])
+    func computerGameGetsSavedPlayerFigureAndAnotherForComputer(player: Figure, computer: Figure) {
+        let router = RouterSpy()
+        let settings = SettingsServiceFake(
+            twoPlayersFigures: [.first: .heart, .second: .hexagon],
+            computerModeFigure: player
+        )
+        let presenter = GameSetupPresenter(mode: .computer, router: router, settings: settings)
+
+        presenter.didTapPlay()
+
+        #expect(router.events == [.showGame(GameConfiguration(
+            mode: .computer,
+            figures: [.first: player, .second: computer]
+        ))])
     }
 }
 

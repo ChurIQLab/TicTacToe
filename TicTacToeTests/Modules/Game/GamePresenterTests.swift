@@ -44,6 +44,22 @@ struct GamePresenterTests {
         ])
     }
 
+    @Test func figuresComeFromConfiguration() throws {
+        let (presenter, view) = makePresenter(figures: [.first: .star, .second: .heart])
+        let firstCell = try position(0, 0)
+        let secondCell = try position(1, 1)
+
+        presenter.didTapCell(at: firstCell)
+        presenter.didTapCell(at: secondCell)
+
+        #expect(view.boardEvents == [
+            .resetBoard,
+            .showFigure(.star, .first, firstCell),
+            .showFigure(.heart, .second, secondCell)
+        ])
+        #expect(view.players.map(\.figure) == [.star, .heart])
+    }
+
     @Test func tapOnOccupiedCellIsIgnored() throws {
         let (presenter, view) = makePresenter()
         let cell = try position(1, 1)
@@ -309,11 +325,12 @@ extension GamePresenterTests {
     private func makePresenter(
         router: RouterSpy = RouterSpy(),
         haptics: HapticsServiceSpy = HapticsServiceSpy(),
-        names: [Side: String] = [:]
+        names: [Side: String] = [:],
+        figures: [Side: Figure] = [:]
     ) -> (GamePresenter, GameViewSpy) {
         let view = GameViewSpy()
         let presenter = GamePresenter(
-            configuration: GameConfiguration(mode: .twoPlayers, names: names),
+            configuration: GameConfiguration(mode: .twoPlayers, names: names, figures: figures),
             router: router,
             haptics: haptics
         )
