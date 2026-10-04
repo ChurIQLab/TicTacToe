@@ -16,6 +16,7 @@ final class SettingsServiceFake: SettingsServiceProtocol {
     var computerModeFigure: Figure
     var twoPlayersNames: [Side: String]
     var computerDifficulty: Difficulty
+    var theme: Theme
 
     // MARK: - Initial
 
@@ -23,11 +24,13 @@ final class SettingsServiceFake: SettingsServiceProtocol {
         twoPlayersFigures: [Side: Figure] = [.first: .cross, .second: .circle],
         computerModeFigure: Figure = .cross,
         twoPlayersNames: [Side: String] = [:],
-        computerDifficulty: Difficulty = .medium
+        computerDifficulty: Difficulty = .medium,
+        theme: Theme = .system
     ) {
         self.twoPlayersFigures = twoPlayersFigures
         self.computerModeFigure = computerModeFigure
         self.twoPlayersNames = twoPlayersNames
         self.computerDifficulty = computerDifficulty
+        self.theme = theme
     }
 }

@@ -18,12 +18,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowScene)
+        let window = UIWindow(windowScene: windowScene)
+        self.window = window
+
+        // The saved theme is set before the window shows, so the first frame is already in it
+        let settings = SettingsService()
+        let appearance = AppearanceService(window: window)
+        appearance.apply(settings.theme, animated: false)
+
         let navigationController = NavigationController()
-        let router = AppRouter(navigationController: navigationController, settings: SettingsService())
+        let router = AppRouter(navigationController: navigationController, settings: settings, appearance: appearance)
         router.start()
         self.router = router
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
     }
 }

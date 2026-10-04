@@ -16,6 +16,7 @@ final class AppRouter {
     /// The window owns the navigation controller, the router only drives it
     private weak var navigationController: UINavigationController?
     private let settings: SettingsServiceProtocol
+    private let appearance: AppearanceServiceProtocol
 
     /// `nil` while the navigation controller runs a transition
     private var idleNavigationController: UINavigationController? {
@@ -25,9 +26,14 @@ final class AppRouter {
 
     // MARK: - Initial
 
-    init(navigationController: UINavigationController, settings: SettingsServiceProtocol) {
+    init(
+        navigationController: UINavigationController,
+        settings: SettingsServiceProtocol,
+        appearance: AppearanceServiceProtocol
+    ) {
         self.navigationController = navigationController
         self.settings = settings
+        self.appearance = appearance
     }
 
     // MARK: - Methods
@@ -57,7 +63,9 @@ extension AppRouter: MenuRouting {
     }
 
     func showSettings() {
-        push(SettingsModuleBuilder.build)
+        push {
+            SettingsModuleBuilder.build(settings: settings, appearance: appearance)
+        }
     }
 }
 

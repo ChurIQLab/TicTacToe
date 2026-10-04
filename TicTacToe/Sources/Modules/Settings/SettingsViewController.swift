@@ -22,6 +22,9 @@ final class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        settingsView.onThemeSelect = { [weak self] index in
+            self?.presenter.didSelectTheme(at: index)
+        }
         presenter.viewDidLoad()
     }
 
@@ -42,5 +45,9 @@ final class SettingsViewController: UIViewController {
 extension SettingsViewController: SettingsViewProtocol {
     func setTitle(_ title: String) {
         navigationItem.title = title
+    }
+
+    func showSettings(_ settings: SettingsViewModel) {
+        settingsView.show(settings)
     }
 }
