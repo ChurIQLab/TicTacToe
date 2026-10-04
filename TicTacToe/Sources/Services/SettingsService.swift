@@ -15,9 +15,10 @@ protocol SettingsServiceProtocol: AnyObject {
     /// Names entered in the two-player mode; a side without a name has no value
     var twoPlayersNames: [Side: String] { get set }
     var computerDifficulty: Difficulty { get set }
+    var theme: Theme { get set }
 }
 
-/// Keeps the choices of the setup screens between launches
+/// Keeps the choices of the setup and settings screens between launches
 final class SettingsService {
 
     // MARK: - Properties
@@ -82,6 +83,12 @@ extension SettingsService: SettingsServiceProtocol {
         set { defaults.set(newValue.rawValue, forKey: Constants.computerDifficultyKey) }
     }
 
+    /// System when nothing is stored or the stored theme is gone
+    var theme: Theme {
+        get { defaults.string(forKey: Constants.themeKey).flatMap(Theme.init(rawValue:)) ?? .system }
+        set { defaults.set(newValue.rawValue, forKey: Constants.themeKey) }
+    }
+
     var twoPlayersNames: [Side: String] {
         get {
             Side.allCases.reduce(into: [Side: String]()) { names, side in
@@ -107,5 +114,6 @@ extension SettingsService {
         static let computerDifficultyKey = "computer.difficulty"
         static let twoPlayersFirstNameKey = "twoPlayers.firstName"
         static let twoPlayersSecondNameKey = "twoPlayers.secondName"
+        static let themeKey = "appearance.theme"
     }
 }

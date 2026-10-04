@@ -37,6 +37,24 @@
         }
       }
     },
+    "appearanceSection" : {
+      "comment" : "Section label above the theme card on the settings screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оформление"
+          }
+        }
+      }
+    },
     "circleFigure" : {
       "comment" : "VoiceOver name of the circle figure",
       "extractionState" : "manual",
@@ -195,6 +213,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Крестик"
+          }
+        }
+      }
+    },
+    "darkTheme" : {
+      "comment" : "Theme segment: always dark",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тёмная"
           }
         }
       }
@@ -375,6 +411,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Шестиугольник"
+          }
+        }
+      }
+    },
+    "lightTheme" : {
+      "comment" : "Theme segment: always light",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Светлая"
           }
         }
       }
@@ -573,6 +627,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Звезда"
+          }
+        }
+      }
+    },
+    "systemTheme" : {
+      "comment" : "Theme segment: follow the system light or dark appearance",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Как в системе"
+          }
+        }
+      }
+    },
+    "themeLabel" : {
+      "comment" : "Title of the theme card on the settings screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theme"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тема"
           }
         }
       }

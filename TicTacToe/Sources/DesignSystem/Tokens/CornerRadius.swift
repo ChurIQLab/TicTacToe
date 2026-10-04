@@ -14,6 +14,7 @@ enum CornerRadius {
 
     static let playerCard: CGFloat = 22
     static let menuItem: CGFloat = 24
+    static let settingsCard: CGFloat = 22
     static let sheet: CGFloat = 34
     static let textField: CGFloat = 16
     static let figureTile: CGFloat = 20

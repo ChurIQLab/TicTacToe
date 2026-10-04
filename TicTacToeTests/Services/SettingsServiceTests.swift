@@ -51,6 +51,23 @@ final class SettingsServiceTests {
         #expect(SettingsService(defaults: defaults).computerDifficulty == .medium)
     }
 
+    @Test func emptySettingsFollowSystemTheme() {
+        #expect(SettingsService(defaults: defaults).theme == .system)
+    }
+
+    @Test func themeIsKeptBetweenLaunches() {
+        SettingsService(defaults: defaults).theme = .dark
+
+        #expect(SettingsService(defaults: defaults).theme == .dark)
+        #expect(defaults.string(forKey: "appearance.theme") == "dark")
+    }
+
+    @Test func unknownStoredThemeFallsBackToSystem() {
+        defaults.set("sepia", forKey: "appearance.theme")
+
+        #expect(SettingsService(defaults: defaults).theme == .system)
+    }
+
     @Test func twoPlayersFiguresAreKeptBetweenLaunches() {
         SettingsService(defaults: defaults).twoPlayersFigures = [.first: .star, .second: .heart]
 

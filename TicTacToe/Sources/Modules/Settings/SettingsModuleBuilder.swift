@@ -8,8 +8,8 @@
 import UIKit
 
 struct SettingsModuleBuilder {
-    static func build() -> UIViewController {
-        let presenter = SettingsPresenter()
+    static func build(settings: SettingsServiceProtocol, appearance: AppearanceServiceProtocol) -> UIViewController {
+        let presenter = SettingsPresenter(settings: settings, appearance: appearance)
         let viewController = SettingsViewController(presenter: presenter)
         presenter.view = viewController
         return viewController
