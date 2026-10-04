@@ -16,6 +16,7 @@ struct SettingsPresenterTests {
     private let view = SettingsViewSpy()
     private let settings = SettingsServiceFake()
     private let appearance = AppearanceServiceSpy()
+    private let haptics = HapticsServiceSpy()
 
     // MARK: - Tests
 
@@ -91,6 +92,48 @@ struct SettingsPresenterTests {
         #expect(settings.theme == .system)
         #expect(appearance.appliedThemes.isEmpty)
     }
+
+    @Test(arguments: [true, false])
+    func viewDidLoadShowsSavedHaptics(isOn: Bool) throws {
+        settings.isHapticsEnabled = isOn
+        let presenter = makePresenter()
+
+        presenter.viewDidLoad()
+
+        let shown = try #require(view.shownSettings.last)
+        #expect(shown.gameLabel == String(localized: .gameSection))
+        #expect(shown.hapticsSwitch == SwitchRowViewModel(title: String(localized: .hapticsLabel), isOn: isOn))
+    }
+
+    @Test func turningHapticsOffSavesWithoutTap() {
+        let presenter = makePresenter()
+        presenter.viewDidLoad()
+
+        presenter.didChangeHaptics(isOn: false)
+
+        #expect(!settings.isHapticsEnabled)
+        #expect(haptics.events.isEmpty)
+    }
+
+    @Test func turningHapticsOnSavesAndTapsOnce() {
+        settings.isHapticsEnabled = false
+        let presenter = makePresenter()
+        presenter.viewDidLoad()
+
+        presenter.didChangeHaptics(isOn: true)
+
+        #expect(settings.isHapticsEnabled)
+        #expect(haptics.events == [.move])
+    }
+
+    @Test func unchangedHapticsDoNothing() {
+        let presenter = makePresenter()
+        presenter.viewDidLoad()
+
+        presenter.didChangeHaptics(isOn: true)
+
+        #expect(haptics.events.isEmpty)
+    }
 }
 
 extension SettingsPresenterTests {
@@ -98,7 +141,7 @@ extension SettingsPresenterTests {
     // MARK: - Private methods
 
     private func makePresenter() -> SettingsPresenter {
-        let presenter = SettingsPresenter(settings: settings, appearance: appearance)
+        let presenter = SettingsPresenter(settings: settings, appearance: appearance, haptics: haptics)
         presenter.view = view
         return presenter
     }

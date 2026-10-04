@@ -8,8 +8,12 @@
 import UIKit
 
 struct SettingsModuleBuilder {
-    static func build(settings: SettingsServiceProtocol, appearance: AppearanceServiceProtocol) -> UIViewController {
-        let presenter = SettingsPresenter(settings: settings, appearance: appearance)
+    static func build(
+        settings: SettingsServiceProtocol,
+        appearance: AppearanceServiceProtocol,
+        haptics: HapticsServiceProtocol
+    ) -> UIViewController {
+        let presenter = SettingsPresenter(settings: settings, appearance: appearance, haptics: haptics)
         let viewController = SettingsViewController(presenter: presenter)
         presenter.view = viewController
         return viewController

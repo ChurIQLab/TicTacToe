@@ -17,6 +17,7 @@ final class SettingsServiceFake: SettingsServiceProtocol {
     var twoPlayersNames: [Side: String]
     var computerDifficulty: Difficulty
     var theme: Theme
+    var isHapticsEnabled: Bool
 
     // MARK: - Initial
 
@@ -25,12 +26,14 @@ final class SettingsServiceFake: SettingsServiceProtocol {
         computerModeFigure: Figure = .cross,
         twoPlayersNames: [Side: String] = [:],
         computerDifficulty: Difficulty = .medium,
-        theme: Theme = .system
+        theme: Theme = .system,
+        isHapticsEnabled: Bool = true
     ) {
         self.twoPlayersFigures = twoPlayersFigures
         self.computerModeFigure = computerModeFigure
         self.twoPlayersNames = twoPlayersNames
         self.computerDifficulty = computerDifficulty
         self.theme = theme
+        self.isHapticsEnabled = isHapticsEnabled
     }
 }

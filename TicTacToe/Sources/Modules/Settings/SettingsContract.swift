@@ -14,4 +14,5 @@ protocol SettingsPresenterProtocol: AnyObject {
     func viewDidLoad()
     /// `index` in `Theme.allCases`, as the segments show them
     func didSelectTheme(at index: Int)
+    func didChangeHaptics(isOn: Bool)
 }

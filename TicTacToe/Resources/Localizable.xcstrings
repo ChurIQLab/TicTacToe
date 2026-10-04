@@ -343,6 +343,42 @@
         }
       }
     },
+    "gameSection" : {
+      "comment" : "Section label above the haptics row on the settings screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Game"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Игра"
+          }
+        }
+      }
+    },
+    "hapticsLabel" : {
+      "comment" : "Title of the haptics switch on the settings screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haptics"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вибрация"
+          }
+        }
+      }
+    },
     "hardDifficulty" : {
       "comment" : "Hard difficulty segment",
       "extractionState" : "manual",

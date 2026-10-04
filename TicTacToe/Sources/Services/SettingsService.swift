@@ -16,6 +16,7 @@ protocol SettingsServiceProtocol: AnyObject {
     var twoPlayersNames: [Side: String] { get set }
     var computerDifficulty: Difficulty { get set }
     var theme: Theme { get set }
+    var isHapticsEnabled: Bool { get set }
 }
 
 /// Keeps the choices of the setup and settings screens between launches
@@ -89,6 +90,12 @@ extension SettingsService: SettingsServiceProtocol {
         set { defaults.set(newValue.rawValue, forKey: Constants.themeKey) }
     }
 
+    /// On when nothing is stored
+    var isHapticsEnabled: Bool {
+        get { defaults.object(forKey: Constants.hapticsKey) as? Bool ?? true }
+        set { defaults.set(newValue, forKey: Constants.hapticsKey) }
+    }
+
     var twoPlayersNames: [Side: String] {
         get {
             Side.allCases.reduce(into: [Side: String]()) { names, side in
@@ -115,5 +122,6 @@ extension SettingsService {
         static let twoPlayersFirstNameKey = "twoPlayers.firstName"
         static let twoPlayersSecondNameKey = "twoPlayers.secondName"
         static let themeKey = "appearance.theme"
+        static let hapticsKey = "game.haptics"
     }
 }

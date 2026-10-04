@@ -17,6 +17,7 @@ final class AppRouter {
     private weak var navigationController: UINavigationController?
     private let settings: SettingsServiceProtocol
     private let appearance: AppearanceServiceProtocol
+    private let haptics: HapticsServiceProtocol
 
     /// `nil` while the navigation controller runs a transition
     private var idleNavigationController: UINavigationController? {
@@ -29,11 +30,13 @@ final class AppRouter {
     init(
         navigationController: UINavigationController,
         settings: SettingsServiceProtocol,
-        appearance: AppearanceServiceProtocol
+        appearance: AppearanceServiceProtocol,
+        haptics: HapticsServiceProtocol
     ) {
         self.navigationController = navigationController
         self.settings = settings
         self.appearance = appearance
+        self.haptics = haptics
     }
 
     // MARK: - Methods
@@ -64,7 +67,7 @@ extension AppRouter: MenuRouting {
 
     func showSettings() {
         push {
-            SettingsModuleBuilder.build(settings: settings, appearance: appearance)
+            SettingsModuleBuilder.build(settings: settings, appearance: appearance, haptics: haptics)
         }
     }
 }
@@ -74,7 +77,7 @@ extension AppRouter: MenuRouting {
 extension AppRouter: GameSetupRouting {
     func showGame(configuration: GameConfiguration) {
         push {
-            GameModuleBuilder.build(configuration: configuration, router: self)
+            GameModuleBuilder.build(configuration: configuration, router: self, haptics: haptics)
         }
     }
 }
