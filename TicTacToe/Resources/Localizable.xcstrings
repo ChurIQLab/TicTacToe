@@ -73,6 +73,24 @@
         }
       }
     },
+    "computerName" : {
+      "comment" : "The computer's name on the card and in the status",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Computer"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Компьютер"
+          }
+        }
+      }
+    },
     "computerSubtitle" : {
       "comment" : "Description of the game against the computer in the main menu",
       "extractionState" : "manual",
@@ -91,6 +109,24 @@
         }
       }
     },
+    "computerThinkingStatus" : {
+      "comment" : "Status line while the computer picks its move; the argument is the computer's name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is thinking…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ думает…"
+          }
+        }
+      }
+    },
     "computerTitle" : {
       "comment" : "Main menu item and screen title of the game against the computer",
       "extractionState" : "manual",
@@ -105,6 +141,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Против компьютера"
+          }
+        }
+      }
+    },
+    "computerWinStatus" : {
+      "comment" : "Status line after the computer wins; the argument is the computer's name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wins"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Победил %@"
+          }
+        }
+      }
+    },
+    "computerWinTitle" : {
+      "comment" : "Result sheet title after the computer wins",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Computer wins"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Победил компьютер"
           }
         }
       }
@@ -631,6 +703,60 @@
         }
       }
     },
+    "youName" : {
+      "comment" : "The player's name on the card against the computer",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы"
+          }
+        }
+      }
+    },
+    "youWinStatus" : {
+      "comment" : "Status line after the player beats the computer; the argument is the player's name «You»",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ win"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ победили"
+          }
+        }
+      }
+    },
+    "youWinTitle" : {
+      "comment" : "Result sheet title after the player beats the computer",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You win"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы победили"
+          }
+        }
+      }
+    },
     "yourFigureLabel" : {
       "comment" : "Section label above the player's figures on the computer setup screen",
       "extractionState" : "manual",
@@ -645,6 +771,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ваша фигура"
+          }
+        }
+      }
+    },
+    "yourTurnStatus" : {
+      "comment" : "Status line when it is the player's turn against the computer, after the player's figure",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your turn"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш ход"
           }
         }
       }

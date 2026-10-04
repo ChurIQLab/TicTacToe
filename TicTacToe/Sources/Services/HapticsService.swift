@@ -11,6 +11,8 @@ protocol HapticsServiceProtocol: AnyObject {
     func playMove()
     func playWin()
     func playDraw()
+    /// The computer has won
+    func playLoss()
 }
 
 final class HapticsService {
@@ -50,6 +52,11 @@ extension HapticsService: HapticsServiceProtocol {
 
     func playDraw() {
         resultGenerator.notificationOccurred(.warning)
+        prepareGenerators()
+    }
+
+    func playLoss() {
+        resultGenerator.notificationOccurred(.error)
         prepareGenerators()
     }
 }

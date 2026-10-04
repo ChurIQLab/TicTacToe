@@ -78,6 +78,14 @@ final class GameView: UIView {
         }
     }
 
+    func setBoardLocked(_ isLocked: Bool) {
+        UIView.animate(withDuration: Constants.lockAnimationDuration) { [cells = cells] in
+            for cell in cells.values {
+                cell.setLocked(isLocked)
+            }
+        }
+    }
+
     func reset() {
         gameID += 1
         winLineView.hide()
@@ -187,6 +195,14 @@ final class GameView: UIView {
     }
 }
 
+// MARK: - Constants
+
+extension GameView {
+    struct Constants {
+        static let lockAnimationDuration: TimeInterval = 0.2
+    }
+}
+
 // MARK: - BoardCell
 
 private final class BoardCell: UIControl {
@@ -196,6 +212,7 @@ private final class BoardCell: UIControl {
     private let cardView = CardView(cornerRadius: CornerRadius.cell(for: .regular))
     private let figureView = FigureView()
     private var figureSizeConstraint: NSLayoutConstraint?
+    private var isEmpty = true
 
     // MARK: - Initial
 
@@ -211,13 +228,22 @@ private final class BoardCell: UIControl {
     // MARK: - Methods
 
     func showFigure(_ figure: Figure, color: UIColor) {
+        isEmpty = false
+        alpha = 1
         figureView.show(figure, color: color, animated: true)
         accessibilityLabel = figure.accessibilityName
     }
 
     func clear() {
+        isEmpty = true
         figureView.show(nil, color: .clear)
         accessibilityLabel = nil
+    }
+
+    /// Only a free cell is dimmed: the figures stay bright while the computer thinks
+    func setLocked(_ isLocked: Bool) {
+        isEnabled = !isLocked
+        alpha = isLocked && isEmpty ? Constants.lockedAlpha : 1
     }
 
     func apply(_ heightClass: HeightClass) {
@@ -251,5 +277,13 @@ private final class BoardCell: UIControl {
         ])
 
         apply(.regular)
+    }
+}
+
+// MARK: - BoardCell.Constants
+
+extension BoardCell {
+    struct Constants {
+        static let lockedAlpha: CGFloat = 0.55
     }
 }

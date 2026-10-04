@@ -28,6 +28,10 @@ extension HapticsServiceSpy: HapticsServiceProtocol {
     func playDraw() {
         events.append(.draw)
     }
+
+    func playLoss() {
+        events.append(.loss)
+    }
 }
 
 // MARK: - Event
@@ -37,5 +41,6 @@ extension HapticsServiceSpy {
         case move
         case win
         case draw
+        case loss
     }
 }
