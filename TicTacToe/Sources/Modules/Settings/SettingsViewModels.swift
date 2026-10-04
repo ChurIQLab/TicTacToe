@@ -21,4 +21,6 @@ nonisolated struct SettingsViewModel: Equatable, Sendable {
     let themePicker: ThemePickerViewModel
     let gameLabel: String
     let hapticsSwitch: SwitchRowViewModel
+    /// The app name and version at the bottom of the screen
+    let footer: String
 }

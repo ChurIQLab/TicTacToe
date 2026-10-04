@@ -18,6 +18,7 @@ final class SettingsView: UIView {
 
     private let scrollView = UIScrollView()
     private let contentStackView = UIStackView()
+    private let footerLabel = UILabel()
 
     // MARK: - Initial
 
@@ -42,6 +43,7 @@ final class SettingsView: UIView {
             label: settings.gameLabel,
             card: makeHapticsCard(with: settings.hapticsSwitch)
         ))
+        footerLabel.text = settings.footer
     }
 
     // MARK: - Setups
@@ -58,16 +60,22 @@ final class SettingsView: UIView {
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(contentStackView)
 
+        footerLabel.font = Typography.small.font()
+        footerLabel.textColor = .secondaryText
+        footerLabel.textAlignment = .center
+        footerLabel.numberOfLines = 0
+        footerLabel.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(footerLabel)
+
         let contentGuide = scrollView.contentLayoutGuide
         let frameGuide = scrollView.frameLayoutGuide
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
 
             contentStackView.topAnchor.constraint(equalTo: contentGuide.topAnchor, constant: Constants.contentTopInset),
-            contentStackView.bottomAnchor.constraint(equalTo: contentGuide.bottomAnchor),
             contentStackView.leadingAnchor.constraint(
                 equalTo: frameGuide.leadingAnchor,
                 constant: Spacing.screenMargin
@@ -76,7 +84,17 @@ final class SettingsView: UIView {
                 equalTo: frameGuide.trailingAnchor,
                 constant: -Spacing.screenMargin
             ),
-            contentGuide.widthAnchor.constraint(equalTo: frameGuide.widthAnchor)
+            contentGuide.widthAnchor.constraint(equalTo: frameGuide.widthAnchor),
+
+            // The footer sits at the bottom of the screen and follows the content when it does not fit
+            contentGuide.heightAnchor.constraint(greaterThanOrEqualTo: frameGuide.heightAnchor),
+            footerLabel.topAnchor.constraint(
+                greaterThanOrEqualTo: contentStackView.bottomAnchor,
+                constant: Constants.footerMinTopSpacing
+            ),
+            footerLabel.leadingAnchor.constraint(equalTo: contentStackView.leadingAnchor),
+            footerLabel.trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor),
+            footerLabel.bottomAnchor.constraint(equalTo: contentGuide.bottomAnchor)
         ])
     }
 
@@ -163,5 +181,6 @@ extension SettingsView {
         /// The row is 60 high with the 31-point switch in the middle
         static let switchRowVerticalPadding: CGFloat = 8
         static let switchRowSpacing: CGFloat = 12
+        static let footerMinTopSpacing: CGFloat = 24
     }
 }
