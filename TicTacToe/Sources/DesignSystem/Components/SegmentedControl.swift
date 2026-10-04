@@ -8,13 +8,15 @@
 import UIKit
 
 /// Capsule track with equal segments; the selected one sits on a sliding thumb.
-/// A tap selects a segment and sends `valueChanged`; setting `selectedIndex` in code sends nothing
+/// A tap selects a segment and sends `valueChanged`; setting `selectedIndex` in code sends nothing.
+/// The style sets the size and colors for the screen background or for a card
 final class SegmentedControl: UIControl {
 
     // MARK: - Properties
 
     private(set) var selectedIndex: Int
 
+    private let style: Style
     private let segments: [Segment]
 
     // MARK: - Outlets
@@ -33,8 +35,9 @@ final class SegmentedControl: UIControl {
 
     // MARK: - Initial
 
-    init(titles: [String], selectedIndex: Int = 0) {
-        segments = titles.map(Segment.init)
+    init(titles: [String], selectedIndex: Int = 0, style: Style = .onBackground) {
+        self.style = style
+        segments = titles.map { Segment(title: $0, font: style.font) }
         self.selectedIndex = titles.indices.contains(selectedIndex) ? selectedIndex : 0
         super.init(frame: .zero)
         setupView()
@@ -68,10 +71,10 @@ final class SegmentedControl: UIControl {
     // MARK: - Setups
 
     private func setupView() {
-        backgroundColor = .segmentTrack
+        backgroundColor = style.trackColor
         layer.cornerCurve = .continuous
 
-        thumbView.backgroundColor = .segmentThumb
+        thumbView.backgroundColor = style.thumbColor
         thumbView.layer.cornerCurve = .continuous
         thumbView.isUserInteractionEnabled = false
         addSubview(thumbView)
@@ -90,7 +93,7 @@ final class SegmentedControl: UIControl {
         accessibilityElements = segments
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: Size.segmentedControlHeight),
+            heightAnchor.constraint(equalToConstant: style.height),
             segmentsStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding),
             segmentsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             segmentsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
@@ -154,9 +157,9 @@ extension SegmentedControl {
 
         // MARK: - Initial
 
-        init(title: String) {
+        init(title: String, font: UIFont) {
             super.init(frame: .zero)
-            setupView(title: title)
+            setupView(title: title, font: font)
         }
 
         required init?(coder: NSCoder) {
@@ -165,12 +168,12 @@ extension SegmentedControl {
 
         // MARK: - Setups
 
-        private func setupView(title: String) {
+        private func setupView(title: String, font: UIFont) {
             isAccessibilityElement = true
             accessibilityLabel = title
 
             titleLabel.text = title
-            titleLabel.font = Typography.captionBold.font()
+            titleLabel.font = font
             titleLabel.textColor = .secondaryText
             titleLabel.textAlignment = .center
             titleLabel.adjustsFontSizeToFitWidth = true
@@ -183,6 +186,45 @@ extension SegmentedControl {
                 titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.titleInset),
                 titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.titleInset)
             ])
+        }
+    }
+}
+
+// MARK: - Style
+
+extension SegmentedControl {
+    enum Style {
+        case onBackground
+        case inCard
+
+        // MARK: - Properties
+
+        var height: CGFloat {
+            switch self {
+            case .onBackground: Size.segmentedControlHeight
+            case .inCard: Size.segmentedControlHeightInCard
+            }
+        }
+
+        fileprivate var trackColor: UIColor {
+            switch self {
+            case .onBackground: .segmentTrack
+            case .inCard: .segmentTrackInCard
+            }
+        }
+
+        fileprivate var thumbColor: UIColor {
+            switch self {
+            case .onBackground: .segmentThumb
+            case .inCard: .segmentThumbInCard
+            }
+        }
+
+        fileprivate var font: UIFont {
+            switch self {
+            case .onBackground: Typography.captionBold.font()
+            case .inCard: Typography.segmentInCard.font()
+            }
         }
     }
 }

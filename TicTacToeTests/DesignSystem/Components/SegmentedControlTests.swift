@@ -68,6 +68,14 @@ struct SegmentedControlTests {
 
         #expect(control.selectedIndex == 0)
     }
+
+    @Test func onBackgroundStyleHasBackgroundHeight() {
+        #expect(height(of: .onBackground) == Size.segmentedControlHeight)
+    }
+
+    @Test func inCardStyleHasCardHeight() {
+        #expect(height(of: .inCard) == Size.segmentedControlHeightInCard)
+    }
 }
 
 extension SegmentedControlTests {
@@ -78,6 +86,11 @@ extension SegmentedControlTests {
         let segments = try #require(control.accessibilityElements as? [UIControl])
         try #require(segments.count == Constants.titles.count)
         return segments
+    }
+
+    private func height(of style: SegmentedControl.Style) -> CGFloat {
+        let control = SegmentedControl(titles: Constants.titles, style: style)
+        return control.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
     }
 
     private func selectedIndices(of control: SegmentedControl) throws -> [Int] {
