@@ -68,6 +68,17 @@ final class SettingsServiceTests {
         #expect(SettingsService(defaults: defaults).theme == .system)
     }
 
+    @Test func emptySettingsHaveHapticsOn() {
+        #expect(SettingsService(defaults: defaults).isHapticsEnabled)
+    }
+
+    @Test func hapticsOffIsKeptBetweenLaunches() {
+        SettingsService(defaults: defaults).isHapticsEnabled = false
+
+        #expect(!SettingsService(defaults: defaults).isHapticsEnabled)
+        #expect(defaults.object(forKey: "game.haptics") as? Bool == false)
+    }
+
     @Test func twoPlayersFiguresAreKeptBetweenLaunches() {
         SettingsService(defaults: defaults).twoPlayersFigures = [.first: .star, .second: .heart]
 

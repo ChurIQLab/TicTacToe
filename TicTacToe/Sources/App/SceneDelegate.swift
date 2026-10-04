@@ -27,7 +27,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appearance.apply(settings.theme, animated: false)
 
         let navigationController = NavigationController()
-        let router = AppRouter(navigationController: navigationController, settings: settings, appearance: appearance)
+        let router = AppRouter(
+            navigationController: navigationController,
+            settings: settings,
+            appearance: appearance,
+            haptics: HapticsService(settings: settings)
+        )
         router.start()
         self.router = router
         window.rootViewController = navigationController

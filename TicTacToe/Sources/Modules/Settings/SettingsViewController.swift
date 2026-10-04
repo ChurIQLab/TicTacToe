@@ -25,6 +25,9 @@ final class SettingsViewController: UIViewController {
         settingsView.onThemeSelect = { [weak self] index in
             self?.presenter.didSelectTheme(at: index)
         }
+        settingsView.onHapticsChange = { [weak self] isOn in
+            self?.presenter.didChangeHaptics(isOn: isOn)
+        }
         presenter.viewDidLoad()
     }
 

@@ -12,6 +12,7 @@ final class SettingsView: UIView {
     // MARK: - Properties
 
     var onThemeSelect: ((Int) -> Void)?
+    var onHapticsChange: ((Bool) -> Void)?
 
     // MARK: - Outlets
 
@@ -36,6 +37,10 @@ final class SettingsView: UIView {
         contentStackView.addArrangedSubview(makeSection(
             label: settings.appearanceLabel,
             card: makeThemeCard(with: settings.themePicker)
+        ))
+        contentStackView.addArrangedSubview(makeSection(
+            label: settings.gameLabel,
+            card: makeHapticsCard(with: settings.hapticsSwitch)
         ))
     }
 
@@ -101,15 +106,35 @@ final class SettingsView: UIView {
         return makeCard(containing: stackView)
     }
 
-    private func makeCard(containing contentView: UIView) -> UIView {
+    /// The title and the switch in one row; VoiceOver reads them as one switch
+    private func makeHapticsCard(with row: SwitchRowViewModel) -> UIView {
+        let titleLabel = makeTitleLabel(text: row.title)
+        titleLabel.isAccessibilityElement = false
+        let hapticsSwitch = UISwitch()
+        hapticsSwitch.isOn = row.isOn
+        hapticsSwitch.accessibilityLabel = row.title
+        hapticsSwitch.addAction(UIAction { [weak self, weak hapticsSwitch] _ in
+            guard let isOn = hapticsSwitch?.isOn else { return }
+            self?.onHapticsChange?(isOn)
+        }, for: .valueChanged)
+
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, hapticsSwitch])
+        stackView.alignment = .center
+        stackView.spacing = Constants.switchRowSpacing
+        let cardView = makeCard(containing: stackView, verticalPadding: Constants.switchRowVerticalPadding)
+        cardView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.switchRowHeight).isActive = true
+        return cardView
+    }
+
+    private func makeCard(containing contentView: UIView, verticalPadding: CGFloat = Spacing.cardPadding) -> UIView {
         let cardView = CardView(cornerRadius: CornerRadius.settingsCard)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(contentView)
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: Spacing.cardPadding),
+            contentView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: verticalPadding),
             contentView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: Spacing.cardPadding),
             contentView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -Spacing.cardPadding),
-            contentView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -Spacing.cardPadding)
+            contentView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -verticalPadding)
         ])
         return cardView
     }
@@ -134,5 +159,9 @@ extension SettingsView {
         static let labelSpacing: CGFloat = 10
         /// Between the card title and the segments
         static let themeCardSpacing: CGFloat = 12
+        static let switchRowHeight: CGFloat = 60
+        /// The row is 60 high with the 31-point switch in the middle
+        static let switchRowVerticalPadding: CGFloat = 8
+        static let switchRowSpacing: CGFloat = 12
     }
 }

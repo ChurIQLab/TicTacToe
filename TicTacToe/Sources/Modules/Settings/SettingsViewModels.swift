@@ -11,7 +11,14 @@ nonisolated struct ThemePickerViewModel: Equatable, Sendable {
     let selectedIndex: Int
 }
 
+nonisolated struct SwitchRowViewModel: Equatable, Sendable {
+    let title: String
+    let isOn: Bool
+}
+
 nonisolated struct SettingsViewModel: Equatable, Sendable {
     let appearanceLabel: String
     let themePicker: ThemePickerViewModel
+    let gameLabel: String
+    let hapticsSwitch: SwitchRowViewModel
 }

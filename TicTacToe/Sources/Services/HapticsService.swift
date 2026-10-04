@@ -15,25 +15,57 @@ protocol HapticsServiceProtocol: AnyObject {
     func playLoss()
 }
 
+/// What the service needs from `UIImpactFeedbackGenerator`, so tests can count the taps
+protocol ImpactFeedbackGenerating: AnyObject {
+    func prepare()
+    func impactOccurred()
+}
+
+/// What the service needs from `UINotificationFeedbackGenerator`
+protocol NotificationFeedbackGenerating: AnyObject {
+    func prepare()
+    func notificationOccurred(_ notificationType: UINotificationFeedbackGenerator.FeedbackType)
+}
+
+extension UIImpactFeedbackGenerator: ImpactFeedbackGenerating {}
+extension UINotificationFeedbackGenerator: NotificationFeedbackGenerating {}
+
+/// Plays nothing while haptics are off in the settings; the setting is read on every call,
+/// so a change applies at once
 final class HapticsService {
 
     // MARK: - Properties
 
-    private let moveGenerator = UIImpactFeedbackGenerator(style: .light)
-    private let resultGenerator = UINotificationFeedbackGenerator()
+    private let settings: SettingsServiceProtocol
+    private let moveGenerator: ImpactFeedbackGenerating
+    private let resultGenerator: NotificationFeedbackGenerating
 
     // MARK: - Initial
 
     /// A prepared generator plays without a delay, so both are prepared again after every use
-    init() {
+    init(
+        settings: SettingsServiceProtocol,
+        moveGenerator: ImpactFeedbackGenerating = UIImpactFeedbackGenerator(style: .light),
+        resultGenerator: NotificationFeedbackGenerating = UINotificationFeedbackGenerator()
+    ) {
+        self.settings = settings
+        self.moveGenerator = moveGenerator
+        self.resultGenerator = resultGenerator
         prepareGenerators()
     }
 
     // MARK: - Private methods
 
     private func prepareGenerators() {
+        guard settings.isHapticsEnabled else { return }
         moveGenerator.prepare()
         resultGenerator.prepare()
+    }
+
+    private func playResult(_ notificationType: UINotificationFeedbackGenerator.FeedbackType) {
+        guard settings.isHapticsEnabled else { return }
+        resultGenerator.notificationOccurred(notificationType)
+        prepareGenerators()
     }
 }
 
@@ -41,22 +73,20 @@ final class HapticsService {
 
 extension HapticsService: HapticsServiceProtocol {
     func playMove() {
+        guard settings.isHapticsEnabled else { return }
         moveGenerator.impactOccurred()
         prepareGenerators()
     }
 
     func playWin() {
-        resultGenerator.notificationOccurred(.success)
-        prepareGenerators()
+        playResult(.success)
     }
 
     func playDraw() {
-        resultGenerator.notificationOccurred(.warning)
-        prepareGenerators()
+        playResult(.warning)
     }
 
     func playLoss() {
-        resultGenerator.notificationOccurred(.error)
-        prepareGenerators()
+        playResult(.error)
     }
 }
