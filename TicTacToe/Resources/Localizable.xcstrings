@@ -613,6 +613,24 @@
         }
       }
     },
+    "settingsFooter" : {
+      "comment" : "Bottom line of the settings screen: the app name and its version, for example 1.0",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · version %2$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · версия %2$@"
+          }
+        }
+      }
+    },
     "settingsTitle" : {
       "comment" : "Title of the settings screen and VoiceOver name of the settings button in the main menu",
       "extractionState" : "manual",

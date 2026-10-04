@@ -105,6 +105,16 @@ struct SettingsPresenterTests {
         #expect(shown.hapticsSwitch == SwitchRowViewModel(title: String(localized: .hapticsLabel), isOn: isOn))
     }
 
+    @Test func footerShowsAppNameAndVersion() throws {
+        let presenter = makePresenter()
+
+        presenter.viewDidLoad()
+
+        let shown = try #require(view.shownSettings.last)
+        #expect(shown.footer == String(localized: .settingsFooter(String(localized: .appTitle), Constants.appVersion)))
+        #expect(shown.footer.contains(Constants.appVersion))
+    }
+
     @Test func turningHapticsOffSavesWithoutTap() {
         let presenter = makePresenter()
         presenter.viewDidLoad()
@@ -141,9 +151,22 @@ extension SettingsPresenterTests {
     // MARK: - Private methods
 
     private func makePresenter() -> SettingsPresenter {
-        let presenter = SettingsPresenter(settings: settings, appearance: appearance, haptics: haptics)
+        let presenter = SettingsPresenter(
+            settings: settings,
+            appearance: appearance,
+            haptics: haptics,
+            appVersion: Constants.appVersion
+        )
         presenter.view = view
         return presenter
+    }
+}
+
+// MARK: - Constants
+
+extension SettingsPresenterTests {
+    struct Constants {
+        static let appVersion = "2.3"
     }
 }
 

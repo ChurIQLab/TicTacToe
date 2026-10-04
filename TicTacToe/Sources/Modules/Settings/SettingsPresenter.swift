@@ -17,17 +17,20 @@ final class SettingsPresenter {
     private let settings: SettingsServiceProtocol
     private let appearance: AppearanceServiceProtocol
     private let haptics: HapticsServiceProtocol
+    private let appVersion: String
 
     // MARK: - Initial
 
     init(
         settings: SettingsServiceProtocol,
         appearance: AppearanceServiceProtocol,
-        haptics: HapticsServiceProtocol
+        haptics: HapticsServiceProtocol,
+        appVersion: String
     ) {
         self.settings = settings
         self.appearance = appearance
         self.haptics = haptics
+        self.appVersion = appVersion
     }
 
     // MARK: - Private methods
@@ -44,7 +47,8 @@ final class SettingsPresenter {
             hapticsSwitch: SwitchRowViewModel(
                 title: String(localized: .hapticsLabel),
                 isOn: settings.isHapticsEnabled
-            )
+            ),
+            footer: String(localized: .settingsFooter(String(localized: .appTitle), appVersion))
         )
     }
 }
