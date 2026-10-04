@@ -15,6 +15,8 @@ nonisolated enum Typography: CaseIterable, Sendable {
     case body
     case caption
     case captionBold
+    /// Segments of a segmented control inside a card
+    case segmentInCard
     case sectionLabel
     case small
 
@@ -27,6 +29,7 @@ nonisolated enum Typography: CaseIterable, Sendable {
         case .score: 32
         case .accent, .body: 17
         case .caption, .captionBold: 15
+        case .segmentInCard: 14
         case .sectionLabel, .small: 13
         }
     }
@@ -34,7 +37,7 @@ nonisolated enum Typography: CaseIterable, Sendable {
     var weight: UIFont.Weight {
         switch self {
         case .largeTitle, .title, .score, .sectionLabel: .heavy
-        case .accent, .captionBold: .bold
+        case .accent, .captionBold, .segmentInCard: .bold
         case .body, .caption, .small: .semibold
         }
     }
@@ -43,7 +46,7 @@ nonisolated enum Typography: CaseIterable, Sendable {
     var tracking: CGFloat {
         switch self {
         case .sectionLabel: 0.06
-        case .largeTitle, .title, .score, .accent, .body, .caption, .captionBold, .small: 0
+        case .largeTitle, .title, .score, .accent, .body, .caption, .captionBold, .segmentInCard, .small: 0
         }
     }
 
@@ -53,7 +56,7 @@ nonisolated enum Typography: CaseIterable, Sendable {
         case .title: .title1
         case .accent: .headline
         case .body: .body
-        case .caption, .captionBold: .subheadline
+        case .caption, .captionBold, .segmentInCard: .subheadline
         case .sectionLabel, .small: .footnote
         }
     }
