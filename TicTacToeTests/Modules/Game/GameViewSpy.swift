@@ -18,7 +18,7 @@ final class GameViewSpy {
         events.filter { event in
             switch event {
             case .showFigure, .resetBoard, .showGameOver: true
-            case .setTitle, .updatePlayers, .updateStatus: false
+            case .setTitle, .updatePlayers, .updateStatus, .setBoardLocked: false
             }
         }
     }
@@ -33,6 +33,14 @@ final class GameViewSpy {
     var result: GameResultViewModel? {
         for case .showGameOver(let result, _) in events.reversed() {
             return result
+        }
+        return nil
+    }
+
+    /// The last lock state the presenter set; `nil` before the first one
+    var isBoardLocked: Bool? {
+        for case .setBoardLocked(let isLocked) in events.reversed() {
+            return isLocked
         }
         return nil
     }
@@ -71,6 +79,10 @@ extension GameViewSpy: GameViewProtocol {
     func showGameOver(_ result: GameResultViewModel, winningLine: WinningLineViewModel?) {
         events.append(.showGameOver(result, winningLine))
     }
+
+    func setBoardLocked(_ isLocked: Bool) {
+        events.append(.setBoardLocked(isLocked))
+    }
 }
 
 // MARK: - Event
@@ -83,5 +95,6 @@ extension GameViewSpy {
         case updatePlayers([PlayerCardViewModel])
         case updateStatus(GameStatusViewModel)
         case showGameOver(GameResultViewModel, WinningLineViewModel?)
+        case setBoardLocked(Bool)
     }
 }

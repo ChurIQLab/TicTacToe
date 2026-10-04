@@ -12,6 +12,8 @@ protocol GameViewProtocol: AnyObject {
     func updatePlayers(_ players: [PlayerCardViewModel])
     func updateStatus(_ status: GameStatusViewModel)
     func showGameOver(_ result: GameResultViewModel, winningLine: WinningLineViewModel?)
+    /// While the computer picks its move: taps are off and the free cells are dimmed
+    func setBoardLocked(_ isLocked: Bool)
 }
 
 protocol GamePresenterProtocol: AnyObject {

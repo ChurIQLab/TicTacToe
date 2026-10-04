@@ -20,7 +20,8 @@ struct GamePresenterTests {
         let presenter = GamePresenter(
             configuration: GameConfiguration(mode: mode),
             router: RouterSpy(),
-            haptics: HapticsServiceSpy()
+            haptics: HapticsServiceSpy(),
+            scheduler: ComputerMoveSchedulerFake()
         )
         presenter.view = view
 
@@ -332,7 +333,8 @@ extension GamePresenterTests {
         let presenter = GamePresenter(
             configuration: GameConfiguration(mode: .twoPlayers, names: names, figures: figures),
             router: router,
-            haptics: haptics
+            haptics: haptics,
+            scheduler: ComputerMoveSchedulerFake()
         )
         presenter.view = view
         presenter.viewDidLoad()

@@ -77,6 +77,10 @@ extension GameViewController: GameViewProtocol {
         gameView.updateStatus(status)
     }
 
+    func setBoardLocked(_ isLocked: Bool) {
+        gameView.setBoardLocked(isLocked)
+    }
+
     func showGameOver(_ result: GameResultViewModel, winningLine: WinningLineViewModel?) {
         gameView.showGameOver(winningLine: winningLine) { [weak self] in
             self?.presentResult(result)
