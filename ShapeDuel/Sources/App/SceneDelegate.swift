@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  TicTacToe
+//  ShapeDuel
 //
 //  Created by Churkin Vitaly on 06.10.2024.
 //

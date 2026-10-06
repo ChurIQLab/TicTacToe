@@ -1,6 +1,6 @@
 //
 //  Side.swift
-//  TicTacToe
+//  ShapeDuel
 //
 //  Created by Churkin Vitaly on 11.09.2026.
 //

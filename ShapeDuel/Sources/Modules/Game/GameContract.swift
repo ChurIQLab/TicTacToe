@@ -1,6 +1,6 @@
 //
 //  GameContract.swift
-//  TicTacToe
+//  ShapeDuel
 //
 //  Created by Churkin Vitaly on 12.09.2026.
 //

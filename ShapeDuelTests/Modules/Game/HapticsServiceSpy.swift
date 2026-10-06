@@ -1,6 +1,6 @@
 //
 //  HapticsServiceSpy.swift
-//  TicTacToeTests
+//  ShapeDuelTests
 //
 //  Created by Churkin Vitaly on 23.09.2026.
 //

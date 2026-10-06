@@ -1,6 +1,6 @@
 //
 //  PaletteTests.swift
-//  TicTacToeTests
+//  ShapeDuelTests
 //
 //  Created by Churkin Vitaly on 15.09.2026.
 //

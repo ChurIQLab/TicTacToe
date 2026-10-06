@@ -1,6 +1,6 @@
 //
 //  GameResultViewController.swift
-//  TicTacToe
+//  ShapeDuel
 //
 //  Created by Churkin Vitaly on 23.09.2026.
 //
