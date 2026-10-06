@@ -1,6 +1,6 @@
 //
-//  TicTacToeUITestsLaunchTests.swift
-//  TicTacToeUITests
+//  ShapeDuelUITestsLaunchTests.swift
+//  ShapeDuelUITests
 //
 //  Created by Churkin Vitaly on 06.10.2024.
 //

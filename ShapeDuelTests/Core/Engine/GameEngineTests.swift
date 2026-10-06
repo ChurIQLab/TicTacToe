@@ -1,6 +1,6 @@
 //
 //  GameEngineTests.swift
-//  TicTacToeTests
+//  ShapeDuelTests
 //
 //  Created by Churkin Vitaly on 11.09.2026.
 //

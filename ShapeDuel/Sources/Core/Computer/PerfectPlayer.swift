@@ -1,6 +1,6 @@
 //
 //  PerfectPlayer.swift
-//  TicTacToe
+//  ShapeDuel
 //
 //  Created by Churkin Vitaly on 26.09.2026.
 //

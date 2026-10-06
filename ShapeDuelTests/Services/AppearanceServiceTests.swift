@@ -1,6 +1,6 @@
 //
 //  AppearanceServiceTests.swift
-//  TicTacToeTests
+//  ShapeDuelTests
 //
 //  Created by Churkin Vitaly on 04.10.2026.
 //

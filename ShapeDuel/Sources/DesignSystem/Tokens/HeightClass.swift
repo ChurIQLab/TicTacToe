@@ -1,6 +1,6 @@
 //
 //  HeightClass.swift
-//  TicTacToe
+//  ShapeDuel
 //
 //  Created by Churkin Vitaly on 16.09.2026.
 //
