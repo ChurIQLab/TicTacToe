@@ -1,4 +1,4 @@
-# TicTacToe
+# Shape Duel
 
 Classic tic-tac-toe for iPhone. Play against the computer or with a friend on the same device.
 
