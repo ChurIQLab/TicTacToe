@@ -69,8 +69,8 @@ jobs:
         run: |
           xcodebuild -version
           xcodebuild build-for-testing \
-            -project TicTacToe.xcodeproj \
-            -scheme TicTacToe \
+            -project ShapeDuel.xcodeproj \
+            -scheme ShapeDuel \
             -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
             SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
             | xcbeautify --renderer github-actions
@@ -79,9 +79,9 @@ jobs:
       - name: Test
         run: |
           xcodebuild test-without-building \
-            -project TicTacToe.xcodeproj \
-            -scheme TicTacToe \
+            -project ShapeDuel.xcodeproj \
+            -scheme ShapeDuel \
             -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
-            -only-testing:TicTacToeTests \
+            -only-testing:ShapeDuelTests \
             -parallel-testing-enabled NO \
             | xcbeautify --renderer github-actions
