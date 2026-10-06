@@ -2,9 +2,9 @@
 # Rules reference: https://realm.github.io/SwiftLint/rule-directory.html
 
 included:
-  - TicTacToe
-  - TicTacToeTests
-  - TicTacToeUITests
+  - ShapeDuel
+  - ShapeDuelTests
+  - ShapeDuelUITests
 
 excluded:
   - DerivedData
